@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Revísate guía tu autoexamen mensual de mama, piel, testículos y boca, con la cámara como apoyo. No diagnostica; te dice cuándo consultar.">
+<meta name="theme-color" content="#F4F4F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E14" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta property="og:title" content="Revísate">
+<meta property="og:description" content="Autoexamen guiado con cámara para la detección temprana de signos de alarma.">
+<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Revísate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: app móvil de una columna (máx. 440px); tarjetas pastel de 24px de radio con degradado suave, cifras grandes, barra flotante en píldora */
+:root{
+  --bg:#F4F4F8; --surface:#FFFFFF; --ink:#121216; --muted:#6F6F7E; --line:#E9E9F0;
+  --accent:#6A4DF4; --on-accent:#FFFFFF; --nav:#121216; --on-nav:#FFFFFF;
+  --lav:#ECE8FF; --lav-2:#F8F6FF; --lav-deep:#6A4DF4;
+  --pink:#FFE1E8; --pink-2:#FFF5F7; --pink-deep:#E0435F;
+  --mint:#DDF3EA; --mint-2:#F3FBF8; --mint-deep:#1F8C64;
+  --sky:#E1EAFF; --sky-2:#F4F7FF; --sky-deep:#3A66DB;
+  --ok:#1F8C64; --ok-soft:#DDF3EA; --alert:#D63A57; --alert-soft:#FFE1E8;
+  --shadow:0 1px 2px rgba(20,20,50,.04), 0 10px 28px rgba(20,20,50,.07);
+  --cam:#0B0B12;
+  --tint:var(--lav); --tint-2:var(--lav-2); --tint-deep:var(--lav-deep);
+  --font:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E0E14; --surface:#18181F; --ink:#F2F2F7; --muted:#A3A3B5; --line:#2A2A35;
+  --accent:#A08CFF; --on-accent:#0E0E14; --nav:#F2F2F7; --on-nav:#0E0E14;
+  --lav:#28224A; --lav-2:#1C1A2C; --lav-deep:#B6A8FF;
+  --pink:#41212B; --pink-2:#25171C; --pink-deep:#FF859C;
+  --mint:#173A2F; --mint-2:#14231E; --mint-deep:#62D6A8;
+  --sky:#1C2848; --sky-2:#161C2E; --sky-deep:#8FB0FF;
+  --ok:#62D6A8; --ok-soft:#173A2F; --alert:#FF859C; --alert-soft:#41212B;
+  --shadow:0 0 0 1px rgba(255,255,255,.05); --cam:#050508; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E0E14; --surface:#18181F; --ink:#F2F2F7; --muted:#A3A3B5; --line:#2A2A35;
+  --accent:#A08CFF; --on-accent:#0E0E14; --nav:#F2F2F7; --on-nav:#0E0E14;
+  --lav:#28224A; --lav-2:#1C1A2C; --lav-deep:#B6A8FF;
+  --pink:#41212B; --pink-2:#25171C; --pink-deep:#FF859C;
+  --mint:#173A2F; --mint-2:#14231E; --mint-deep:#62D6A8;
+  --sky:#1C2848; --sky-2:#161C2E; --sky-deep:#8FB0FF;
+  --ok:#62D6A8; --ok-soft:#173A2F; --alert:#FF859C; --alert-soft:#41212B;
+  --shadow:0 0 0 1px rgba(255,255,255,.05); --cam:#050508; color-scheme:dark}
+.t-mama{--tint:var(--pink); --tint-2:var(--pink-2); --tint-deep:var(--pink-deep)}
+.t-piel{--tint:var(--lav); --tint-2:var(--lav-2); --tint-deep:var(--lav-deep)}
+.t-testiculo{--tint:var(--sky); --tint-2:var(--sky-2); --tint-deep:var(--sky-deep)}
+.t-boca{--tint:var(--mint); --tint-2:var(--mint-2); --tint-deep:var(--mint-deep)}
+
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5}
+.app{max-width:440px;margin:0 auto;padding-inline:16px;padding-block:18px 124px;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.12;letter-spacing:-.02em}
+h1{font-size:2rem;font-weight:800}
+h2{font-size:1.3rem;font-weight:800}
+h3{font-size:1.02rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+.muted{color:var(--muted)}
+.eyebrow{font-size:.78rem;color:var(--muted);font-weight:600}
+.stack{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--surface);border-radius:24px;padding:18px;box-shadow:var(--shadow)}
+.tinted{background:linear-gradient(155deg,var(--tint) 0%,var(--tint-2) 100%)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{border:0;border-radius:999px;padding:14px 20px;font-weight:700;background:var(--accent);color:var(--on-accent);width:100%}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+.btn.white{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);width:auto;padding:10px 18px;font-size:.9rem;align-self:flex-start}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > .btn{flex:1 1 140px}
+.back{background:var(--surface);border:0;border-radius:999px;box-shadow:var(--shadow);padding:9px 16px;font-weight:700;align-self:flex-start}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px 0;font-size:.9rem;align-self:center}
+.iconbtn{width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.iconbtn svg,.tabbar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.who{display:flex;gap:10px;align-items:center;min-width:0}
+.who .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(155deg,var(--lav),var(--pink));display:grid;place-items:center;font-weight:800;color:var(--lav-deep)}
+.who small{display:block;color:var(--muted);font-size:.75rem}
+.who strong{font-size:.95rem}
+.headline{font-size:2.15rem;line-height:1.08}
+.headline .pulse{display:inline-block;width:92px;height:26px;vertical-align:middle;margin-left:6px}
+.pulse path{fill:none;stroke:var(--pink-deep);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.hero{border-radius:24px;padding:18px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;box-shadow:var(--shadow)}
+.hero .stack{gap:8px}
+.big{display:flex;flex-direction:column;align-items:flex-end;line-height:1}
+.big .num{font-size:3.6rem;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.big .unit{font-size:.85rem;font-weight:700;color:var(--muted)}
+.glyph{width:40px;height:40px;border-radius:14px;background:var(--surface);color:var(--tint-deep);display:grid;place-items:center;font-weight:800;box-shadow:var(--shadow);flex:none}
+
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--line);border-radius:999px;padding:4px}
+.seg button{background:transparent;border:0;border-radius:999px;padding:10px 6px;font-weight:700;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--nav);color:var(--on-nav)}
+.opt,.check{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1.5px solid transparent;border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)}
+.opt input,.check input{width:22px;height:22px;flex:none;margin-top:1px}
+.opt input{accent-color:var(--accent)}
+.check input{accent-color:var(--alert)}
+.opt label,.check label{cursor:pointer}
+.opt:has(input:checked){border-color:var(--accent)}
+.check:has(input:checked){border-color:var(--alert);background:var(--alert-soft)}
+
+.section-head{display:flex;justify-content:space-between;align-items:baseline}
+.exam-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.exam{border:0;border-radius:24px;padding:16px;text-align:left;display:flex;flex-direction:column;gap:8px;min-height:156px;background:linear-gradient(155deg,var(--tint) 0%,var(--tint-2) 100%);box-shadow:var(--shadow)}
+.exam .when{font-size:.8rem;color:var(--muted);margin-top:auto}
+.exam-grid > .exam:last-child:nth-child(odd){grid-column:1 / -1;min-height:0}
+.meter{display:flex;gap:3px}
+.meter i{flex:1;height:14px;border-radius:3px;background:var(--surface);opacity:.9}
+.meter i.on{background:var(--tint-deep);opacity:1}
+
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;font-weight:700;border-radius:999px;padding:3px 10px;width:fit-content}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--alert-soft);color:var(--alert)}
+.pill.ex{background:var(--line);color:var(--muted)}
+.pill.soft{background:var(--surface);color:var(--tint-deep)}
+.pill.live::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+
+.signs{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--tint-deep);border-radius:999px;transition:width .25s}
+.tip{background:var(--tint-2);border-radius:14px;padding:10px 12px;color:var(--muted);font-size:.92rem}
+
+/* Visor de cámara */
+.viewer{position:relative;background:var(--cam);aspect-ratio:3/4;max-height:62vh;overflow:hidden;border-radius:24px;box-shadow:var(--shadow)}
+.viewer video,.viewer canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.viewer video.mirror{transform:scaleX(-1)}
+.hud{position:absolute;left:12px;right:12px;top:12px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.hud .say{background:rgba(255,255,255,.92);color:#121216;border-radius:16px;padding:10px 14px;font-weight:700;font-size:1rem}
+.hud .chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.85);color:#4A4A58;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
+.chip.ok{background:#DDF3EA;color:#1F8C64}
+.chip.bad{background:#FFE1E8;color:#D63A57}
+.camtools{position:absolute;right:12px;bottom:12px;display:flex;gap:8px}
+.camtools button{background:rgba(255,255,255,.92);color:#121216;border:0;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700}
+.verified{display:flex;gap:10px;align-items:center;font-weight:700;color:var(--ok)}
+.notice{background:var(--alert-soft);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
+
+.result{border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.result.warn{background:linear-gradient(155deg,var(--pink) 0%,var(--pink-2) 100%)}
+.result.calm{background:linear-gradient(155deg,var(--mint) 0%,var(--mint-2) 100%)}
+.result .tag{display:inline-flex;width:fit-content;font-size:.76rem;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--surface);color:var(--alert)}
+.result.calm .tag{color:var(--ok)}
+
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;color:var(--muted);font-size:.76rem}
+.tablewrap{overflow-x:auto}
+.rec{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:start}
+.rec .date{display:flex;flex-direction:column;align-items:center;justify-content:center;width:52px;height:52px;border-radius:16px;background:linear-gradient(155deg,var(--tint),var(--tint-2));font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
+.rec .date small{font-size:.7rem;font-weight:700;color:var(--muted)}
+textarea,select{font:inherit;width:100%;border:1.5px solid var(--line);border-radius:16px;padding:12px;background:var(--surface);color:var(--ink)}
+.field{display:flex;flex-direction:column;gap:8px}
+.field > label{font-weight:700;font-size:.92rem}
+
+.tabbar{position:fixed;left:0;right:0;bottom:0;padding:0 16px calc(16px + env(safe-area-inset-bottom,0px));pointer-events:none}
+.tabbar nav{pointer-events:auto;max-width:260px;margin:0 auto;display:flex;justify-content:space-between;background:var(--surface);border-radius:999px;padding:8px;box-shadow:0 12px 32px rgba(20,20,50,.14), 0 0 0 1px var(--line)}
+.tabbar button{width:52px;height:52px;border-radius:50%;border:0;background:var(--bg);color:var(--ink);display:grid;place-items:center}
+.tabbar button[aria-current="page"]{background:var(--nav);color:var(--on-nav)}
+.disclaimer{font-size:.84rem;color:var(--muted)}
+.copy{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.copy code{font-family:var(--font);font-size:1.6rem;font-weight:800;color:var(--ink)}
+.small-btn{border:0;background:var(--surface);border-radius:999px;padding:7px 14px;font-size:.85rem;font-weight:700;box-shadow:var(--shadow)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="app" id="app" aria-live="polite"></main>
+<div class="tabbar"><nav aria-label="Secciones">
+  <button id="tab-home" data-tab="home" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></button>
+  <button id="tab-history" data-tab="history" aria-label="Historial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></button>
+  <button id="tab-info" data-tab="info" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button>
+</nav></div>
+
+<script>
+/* ---------- Contenido clínico ----------
+   cam: zona objetivo en coordenadas normalizadas de pantalla [x, y, ancho, alto],
+   need: 'still' (mantener posición) o 'motion' (movimiento de la mano dentro de la zona),
+   secs: segundos que debe cumplirse la condición. cam:null = paso sin verificación por cámara. */
+const EXAMS = {
+  mama: {
+    name:"Mama", glyph:"M", body:"mamas", intimate:true,
+    freq:"Una vez al mes, 3 a 5 días después de terminar la menstruación. En menopausia, un día fijo del mes.",
+    intro:"La meta es conocer cómo se ven y se sienten tus mamas normalmente, para notar cualquier cambio.",
+    framing:"Apoya el celular frente a ti, a la altura del pecho, a unos 60 cm.",
+    steps:[
+      {t:"Frente al espejo", b:"Brazos abajo. Mira la forma, el tamaño y el color de ambas mamas.", tip:"Busca diferencias nuevas, no las asimetrías de siempre.", cam:{zone:[.15,.32,.7,.42], need:"still", secs:4, say:"Encuadra tu pecho en el recuadro y quédate quieta"}},
+      {t:"Brazos arriba", b:"Levanta los brazos y vuelve a mirar. Observa hundimientos de la piel o del pezón.", cam:{zone:[.1,.05,.8,.32], need:"motion", secs:2, say:"Levanta los brazos dentro del recuadro superior"}},
+      {t:"Palpa la mama derecha", b:"Brazo derecho detrás de la cabeza. Con las yemas de tres dedos de la mano izquierda, haz círculos pequeños del pezón hacia afuera.", tip:"Usa presión suave, media y firme. Puedes hacerlo de pie o acostada.", cam:{zone:[.5,.34,.42,.4], need:"motion", secs:20, say:"Mueve los dedos en círculos dentro del recuadro"}},
+      {t:"Axila derecha", b:"Palpa la axila y la zona sobre la clavícula buscando bultos.", cam:{zone:[.62,.2,.34,.3], need:"motion", secs:8, say:"Palpa la axila dentro del recuadro"}},
+      {t:"Palpa la mama izquierda", b:"Repite con el brazo izquierdo detrás de la cabeza y la mano derecha.", cam:{zone:[.08,.34,.42,.4], need:"motion", secs:20, say:"Mueve los dedos en círculos dentro del recuadro"}},
+      {t:"Axila izquierda", b:"Palpa la axila izquierda y la zona sobre la clavícula.", cam:{zone:[.04,.2,.34,.3], need:"motion", secs:8, say:"Palpa la axila dentro del recuadro"}},
+      {t:"Pezones", b:"Presiona suavemente cada pezón y observa si sale algún líquido.", cam:null}
+    ],
+    signs:["Bulto o engrosamiento en la mama o la axila","Cambio de tamaño o de forma","Piel roja, escamosa o con aspecto de cáscara de naranja","Hundimiento de la piel o del pezón","Secreción por el pezón, sobre todo con sangre","Dolor persistente fuera del periodo menstrual"]
+  },
+  piel: {
+    name:"Piel", glyph:"P", body:"todos",
+    freq:"Una vez al mes, en un cuarto bien iluminado.",
+    intro:"Muchos melanomas los detecta la propia persona. Revisa de la cabeza a los pies y fíjate en lunares nuevos o que cambian.",
+    framing:"Apoya el celular a unos 2 metros para que se vea todo tu cuerpo, o usa la cámara trasera para mirar de cerca.",
+    abcde:true,
+    steps:[
+      {t:"Frente", b:"Revisa tu cuerpo de frente en el espejo, de la cabeza a los pies.", cam:{zone:[.2,.06,.6,.88], need:"still", secs:5, say:"Ponte de frente, todo el cuerpo en el recuadro"}},
+      {t:"Espalda", b:"Date la vuelta y revisa la espalda con un espejo de mano.", cam:{zone:[.2,.06,.6,.88], need:"motion", secs:3, say:"Gira despacio hasta quedar de espaldas"}},
+      {t:"Costados", b:"Levanta los brazos y revisa cada costado.", cam:{zone:[.05,.06,.9,.5], need:"motion", secs:3, say:"Levanta los brazos y gira a cada lado"}},
+      {t:"Brazos, manos y uñas", b:"Revisa antebrazos, la parte de atrás de los brazos, palmas y uñas.", tip:"Una mancha oscura nueva bajo una uña también cuenta.", cam:{zone:[.2,.25,.6,.5], need:"still", secs:4, say:"Acerca un brazo al recuadro y mantenlo quieto"}},
+      {t:"Piernas y pies", b:"Revisa la parte de atrás de las piernas, entre los dedos y las plantas.", cam:null},
+      {t:"Cuero cabelludo y nuca", b:"Separa el cabello con un peine o pide ayuda a alguien.", cam:null},
+      {t:"Compara con la regla ABCDE", b:"Mira cada lunar con la regla ABCDE y busca el patito feo: el lunar que no se parece a los demás.", cam:null}
+    ],
+    signs:["Un lunar asimétrico, de borde irregular o con varios colores","Un lunar de más de 6 mm","Un lunar que cambió de tamaño, forma o color","Un lunar distinto a todos los demás","Una herida que no cicatriza","Un lunar que pica, duele o sangra"]
+  },
+  testiculo: {
+    name:"Testículos", glyph:"T", body:"testiculos", intimate:true,
+    freq:"Una vez al mes, después de una ducha caliente, cuando el escroto está relajado.",
+    intro:"El cáncer de testículo afecta sobre todo a hombres de 15 a 35 años y casi siempre se cura si se detecta temprano.",
+    framing:"Apoya el celular frente a ti, a la altura de la cadera, a unos 60 cm.",
+    steps:[
+      {t:"Observa", b:"Mira el escroto y busca hinchazón en la piel.", cam:{zone:[.25,.35,.5,.35], need:"still", secs:4, say:"Encuadra la zona en el recuadro y quédate quieto"}},
+      {t:"Testículo derecho", b:"Ruédalo suavemente entre el pulgar y los dedos de ambas manos. No debería doler.", tip:"Lo normal es una superficie lisa y firme.", cam:{zone:[.48,.35,.3,.35], need:"motion", secs:15, say:"Rueda el testículo con los dedos dentro del recuadro"}},
+      {t:"Testículo izquierdo", b:"Repite con el otro testículo.", cam:{zone:[.22,.35,.3,.35], need:"motion", secs:15, say:"Rueda el testículo con los dedos dentro del recuadro"}},
+      {t:"Ubica el epidídimo", b:"Detrás de cada testículo hay un tubo blando: es el epidídimo. Es normal, no lo confundas con un bulto.", cam:null},
+      {t:"Compara ambos lados", b:"Que uno sea algo más grande es normal. Fíjate en cambios respecto al mes pasado.", cam:null}
+    ],
+    signs:["Un bulto en el testículo","Aumento o disminución de tamaño de un testículo","Sensación de peso en el escroto o líquido repentino","Dolor sordo en la parte baja del abdomen o la ingle"]
+  },
+  boca: {
+    name:"Boca y cuello", glyph:"B", body:"todos", twoWeeks:true,
+    freq:"Una vez al mes. Necesitas buena luz, dedos limpios y una gasa. Retira prótesis dentales.",
+    intro:"Las zonas más frecuentes de cáncer oral son los bordes de la lengua y el piso de la boca.",
+    framing:"Sostén el celular con la cámara frontal a unos 30 cm de tu cara, con buena luz.",
+    steps:[
+      {t:"Cara", b:"Compara ambos lados de la cara y busca hinchazones o cambios en la piel.", cam:{zone:[.2,.12,.6,.56], need:"still", secs:4, say:"Centra tu cara en el óvalo y quédate quieto", oval:true}},
+      {t:"Cuello y mandíbula", b:"Palpa bajo la mandíbula y a lo largo del músculo de cada lado del cuello.", tip:"Alerta con un bulto firme, que no se mueve y no duele.", cam:{zone:[.15,.6,.7,.3], need:"motion", secs:10, say:"Palpa tu cuello con los dedos dentro del recuadro"}},
+      {t:"Labios y encías", b:"Levanta el labio superior y baja el inferior. Revisa llagas, cambios de color o sangrado.", cam:{zone:[.3,.42,.4,.2], need:"still", secs:4, say:"Acerca la boca al recuadro y mantén los labios separados"}},
+      {t:"Mejillas", b:"Separa la comisura con los dedos y mira el interior de cada mejilla.", cam:{zone:[.3,.42,.4,.2], need:"motion", secs:4, say:"Separa la mejilla dentro del recuadro"}},
+      {t:"Lengua", b:"Sácala, sujétala con la gasa y revisa arriba, abajo y ambos bordes.", cam:{zone:[.3,.45,.4,.25], need:"still", secs:5, say:"Saca la lengua dentro del recuadro y mantenla quieta"}},
+      {t:"Piso y paladar", b:"Con la punta de la lengua en el paladar, mira el piso de la boca. Luego inclina la cabeza y mira el paladar.", cam:{zone:[.3,.38,.4,.28], need:"still", secs:4, say:"Abre la boca dentro del recuadro"}}
+    ],
+    signs:["Mancha blanca, roja o mixta","Llaga que no cicatriza o sangra con facilidad","Bulto o engrosamiento de los tejidos","Dificultad para masticar o tragar","Dolor de garganta o ronquera que no se van","Bulto en el cuello"]
+  }
+};
+const ABCDE = [["A","Asimetría","Las dos mitades no coinciden"],["B","Borde","Irregular, dentado o difuso"],["C","Color","Varios colores; zonas rosadas, rojas, blancas o azules"],["D","Diámetro","Más de 6 mm"],["E","Evolución","Cambia de tamaño, forma o color"]];
+const GENERAL = ["Un bulto nuevo, sobre todo en mamas o testículos","Una úlcera que no cicatriza, incluidas las de la boca","Un lunar que cambia de forma, tamaño o color","Cualquier sangrado anormal","Pérdida de peso sin causa aparente"];
+const MONTHS = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+
+/* ---------- Estado ---------- */
+function load(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
+function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+const today = new Date();
+const iso = d => d.toISOString().slice(0,10);
+const daysAgo = n => { const d = new Date(today); d.setDate(d.getDate()-n); return iso(d); };
+const SAMPLE = [
+  {id:"ex1", exam:"piel", date:daysAgo(34), signs:[], note:"Foto de lunar en el hombro derecho.", verified:3, total:7, example:true},
+  {id:"ex2", exam:"boca", date:daysAgo(41), signs:[], note:"", verified:6, total:6, example:true}
+];
+const S = {
+  view:"home", exam:null, step:0, checked:new Set(), note:"", verified:new Set(), camMode:null,
+  records: load("rv2_records", SAMPLE),
+  profile: load("rv2_profile", null),   // {sex:'mujer'|'hombre'|'elegir', mamas:bool, testiculos:bool, adult:bool, reminder:bool, day:number}
+  followups: load("rv2_followups", [])
+};
+const persist = () => { save("rv2_records", S.records); save("rv2_profile", S.profile); save("rv2_followups", S.followups); };
+const fmt = s => { const [y,m,d] = s.split("-"); return `${Number(d)} ${MONTHS[Number(m)-1]}`; };
+const lastOf = k => S.records.filter(r => r.exam===k).sort((a,b)=>b.date.localeCompare(a.date))[0];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function myExams(p = S.profile){
+  if (!p) return Object.keys(EXAMS);
+  return Object.keys(EXAMS).filter(k => {
+    const b = EXAMS[k].body;
+    return b==="todos" || (b==="mamas" && p.mamas) || (b==="testiculos" && p.testiculos);
+  });
+}
+function profileFromSex(sex, prev){
+  if (sex==="mujer") return {mamas:true, testiculos:false};
+  if (sex==="hombre") return {mamas:false, testiculos:true};
+  return {mamas:prev?.mamas ?? true, testiculos:prev?.testiculos ?? true};
+}
+const camAllowed = k => !EXAMS[k].intimate || S.profile?.adult;
+
+function go(view){ if (view!=="step") stopCamera(); S.view = view; render(); window.scrollTo(0,0); }
+
+function render(){
+  const app = document.getElementById("app");
+  const views = {home, profile, intro, step, check, result, history, info};
+  if (!S.profile && !["profile"].includes(S.view)) S.view = "profile";
+  app.innerHTML = views[S.view]();
+  app.className = "app" + (S.exam && ["intro","step","check","result"].includes(S.view) ? " t-" + S.exam : "");
+  document.querySelector(".tabbar").hidden = ["profile","step","check"].includes(S.view);
+  document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===S.view ? "page" : "false"));
+  bind();
+  if (S.view==="step") mountStep();
+}
+
+/* ---------- Pantallas ---------- */
+let draft = null;
+function profileForm(p){
+  const sex = p.sex;
+  return `<div class="field"><label>Sexo asignado al nacer</label>
+      <div class="seg" role="group" aria-label="Sexo">
+        ${["mujer","hombre","elegir"].map(s=>`<button id="sex-${s}" data-sex="${s}" aria-pressed="${sex===s}">${s==="elegir"?"Elegir":s[0].toUpperCase()+s.slice(1)}</button>`).join("")}
+      </div>
+      <p class="disclaimer">Lo usamos solo para mostrarte los autoexámenes que corresponden a tu cuerpo. Si eliges, marca según tu anatomía.</p></div>
+    ${sex==="elegir"?`<div class="stack">
+      <div class="opt"><input type="checkbox" id="pf-mamas" ${p.mamas?"checked":""}><label for="pf-mamas">Tengo tejido mamario</label></div>
+      <div class="opt"><input type="checkbox" id="pf-test" ${p.testiculos?"checked":""}><label for="pf-test">Tengo testículos</label></div></div>`:""}
+    <div class="card stack"><h3>Te mostraremos</h3><p>${myExams(p).map(k=>EXAMS[k].name).join(" · ")}</p>
+      ${sex==="hombre"?`<p class="disclaimer">Los hombres también pueden tener cáncer de mama. Si notas un bulto o un cambio en el pecho, consulta.</p>`:""}</div>
+    <div class="opt"><input type="checkbox" id="pf-adult" ${p.adult?"checked":""}><label for="pf-adult">Tengo 18 años o más<br><span class="disclaimer">Necesario para usar la cámara en los autoexámenes de mama y testículos.</span></label></div>
+    <div class="opt"><input type="checkbox" id="pf-rem" ${p.reminder?"checked":""}><label for="pf-rem">Quiero un recordatorio mensual (opcional)</label></div>
+    ${p.reminder?`<div class="field"><label for="pf-day">Día del mes</label><select id="pf-day">${Array.from({length:28},(_,i)=>`<option value="${i+1}" ${i+1===p.day?"selected":""}>Día ${i+1}</option>`).join("")}</select></div>`:""}`;
+}
+function profile(){
+  if (!draft) draft = S.profile ? {...S.profile} : {sex:"mujer", mamas:true, testiculos:false, adult:false, reminder:false, day:5};
+  return `<div class="stack" style="gap:18px;padding-top:12px">
+    <span class="eyebrow">Bienvenida</span>
+    <h1>Aprende a revisarte bien, con la cámara como guía.</h1>
+    <div class="card stack">
+      <p>La app <strong>no diagnostica</strong>. Te guía para hacer cada paso correctamente y te dice cuándo consultar.</p>
+      <p>La cámara se usa solo para comprobar tu posición y tus movimientos. <strong>Las imágenes se procesan en tu teléfono y no se guardan ni se envían.</strong></p>
+    </div>
+    ${profileForm(draft)}
+    <button class="btn" id="pf-save">Guardar y empezar</button></div>`;
+}
+
+function home(){
+  const pending = S.followups.filter(f => !f.done);
+  const p = S.profile, ks = myExams();
+  const ageOf = k => { const l = lastOf(k); return l ? Math.round((today - new Date(l.date))/864e5) : null; };
+  const dk = [...ks].sort((a,b) => (ageOf(b) ?? 9999) - (ageOf(a) ?? 9999))[0], dage = ageOf(dk), de = EXAMS[dk];
+  const cards = ks.map(k => {
+    const e = EXAMS[k], last = lastOf(k);
+    const segs = last ? Array.from({length:last.total},(_,i)=>`<i class="${i<last.verified?"on":""}"></i>`).join("") : "";
+    const full = last && last.verified === last.total && last.total > 0;
+    return `<button class="exam t-${k}" data-exam="${k}" id="exam-${k}">
+      <span class="glyph" aria-hidden="true">${e.glyph}</span>
+      <h3>${e.name}</h3>
+      ${last ? `<span class="pill ${full?"ok":"soft"}">${last.verified}/${last.total} verificados</span>` : `<span class="pill soft">Nuevo</span>`}
+      ${last?`<span class="meter" aria-hidden="true">${segs}</span>`:""}
+      <span class="when">${last ? `Último: ${fmt(last.date)}` : "Aún sin registro"}</span>
+    </button>`;}).join("");
+  return `<div class="topbar"><div class="who"><span class="avatar" aria-hidden="true">R</span><div><small>Hola de nuevo</small><strong>Tu autoexamen</strong></div></div>
+      <button class="iconbtn" data-tab="info" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button></div>
+    <div class="stack" style="gap:6px"><h1 class="headline">Revísate<br>paso a paso<svg class="pulse" viewBox="0 0 92 26" aria-hidden="true"><path d="M0 14h30l5-10 6 18 5-12 3 4h43"/></svg></h1>
+      <p class="muted">Cuídate hoy, consulta a tiempo</p></div>
+    <div class="hero tinted t-${dk}">
+      <div class="stack"><span class="glyph" aria-hidden="true">${de.glyph}</span>
+        <h3>Siguiente:<br>${de.name}</h3>
+        <p class="disclaimer">${dage===null ? "Aún no lo has hecho" : "Desde tu último autoexamen"}</p>
+        <button class="btn white" data-exam="${dk}" id="hero-go">Empezar guía</button></div>
+      <div class="big">${dage===null ? `<span class="num">0</span><span class="unit">registros</span>` : `<span class="num">${dage}</span><span class="unit">días</span>`}</div>
+    </div>
+    ${p.reminder?`<span class="pill soft live">Recordatorio el día ${p.day} de cada mes</span>`:""}
+    ${pending.map(f=>`<div class="result warn"><span class="tag">Seguimiento de 2 semanas</span><p>Revisa de nuevo la lesión en la boca el <strong>${fmt(f.date)}</strong>. Si sigue ahí, consulta a tu dentista o médico.</p><button class="small-btn" data-fu="${f.id}" id="fu-${f.id}">Ya la revisé</button></div>`).join("")}
+    <div class="stack"><div class="section-head"><h2>Tus autoexámenes</h2><span class="eyebrow">${ks.length} para ti</span></div><div class="exam-grid">${cards}</div></div>
+    ${p.sex==="hombre"?`<p class="disclaimer">Los hombres también pueden tener cáncer de mama: consulta si notas un bulto o cambio en el pecho.</p>`:""}
+    <div class="card stack t-mama"><div class="row" style="align-items:center;gap:10px"><span class="glyph" aria-hidden="true">!</span><h3>Consulta pronto si notas</h3></div>
+      <ul class="signs">${GENERAL.map(g=>`<li>${g}</li>`).join("")}</ul><p class="disclaimer">Signos de alarma generales difundidos por el INEN.</p></div>`;
+}
+
+function intro(){
+  const e = EXAMS[S.exam], n = e.steps.length, nc = e.steps.filter(s=>s.cam).length;
+  const can = camAllowed(S.exam);
+  return `<button class="back" id="back-home">← Inicio</button>
+    <div class="card tinted stack"><div class="row" style="align-items:center;justify-content:space-between"><span class="glyph" aria-hidden="true">${e.glyph}</span><span class="pill soft">${n} pasos · 5 min</span></div><h1>${e.name}</h1><p>${e.intro}</p></div>
+    <div class="card stack"><h3>Cuándo hacerlo</h3><p>${e.freq}</p></div>
+    ${e.abcde ? abcdeTable() : ""}
+    <div class="card stack"><h3>Cómo te guía la cámara</h3>
+      <p>${e.framing}</p>
+      <p>${nc} de ${n} pasos se verifican con la cámara: la app revisa que haya buena luz, que estés bien encuadrada o encuadrado y que tus manos se muevan en la zona correcta el tiempo suficiente.</p>
+      <p class="disclaimer">Nada se graba ni se envía. Todo se procesa en tu teléfono.</p></div>
+    ${can?`<button class="btn" id="start-cam">Empezar con cámara</button><button class="btn ghost" id="start-manual">Empezar sin cámara</button>`
+         :`<div class="notice"><p>La guía con cámara para este autoexamen está disponible solo para personas de 18 años o más. Puedes hacerlo con la guía paso a paso.</p></div><button class="btn" id="start-manual">Empezar</button>`}`;
+}
+function abcdeTable(){
+  return `<div class="card stack"><h3>Regla ABCDE</h3><div class="tablewrap"><table><thead><tr><th></th><th>Qué mirar</th><th>Sospechoso si</th></tr></thead><tbody>
+  ${ABCDE.map(r=>`<tr><td><strong>${r[0]}</strong></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div></div>`;
+}
+
+function step(){
+  const e = EXAMS[S.exam], st = e.steps[S.step], n = e.steps.length;
+  const useCam = S.camMode && st.cam;
+  const done = S.verified.has(S.step);
+  return `<button class="back" id="quit">← Salir</button>
+    <div class="stack"><span class="eyebrow">${e.name} · paso ${S.step+1} de ${n}</span>
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${S.step+1}"><span style="width:${(S.step+1)/n*100}%"></span></div></div>
+    ${useCam?`<div class="viewer" id="viewer">
+        <video id="vid" playsinline muted class="mirror" hidden></video>
+        <canvas id="ov"></canvas>
+        <div class="hud"><div class="say" id="say">${st.cam.say}</div>
+          <div class="chips"><span class="chip" id="c-light">Luz</span><span class="chip" id="c-cond">${st.cam.need==="still"?"Posición quieta":"Movimiento en la zona"}</span><span class="chip" id="c-time">0 / ${st.cam.secs} s</span></div></div>
+        <div class="camtools"><button id="flip">Cambiar cámara</button></div>
+      </div>
+      <div id="camfail" hidden></div>`:""}
+    <div class="stack"><h2>${st.t}</h2><p>${st.b}</p>${st.tip?`<p class="tip">${st.tip}</p>`:""}</div>
+    ${useCam?`<p class="verified" id="okline" ${done?"":"hidden"}>✓ Paso verificado</p>`:""}
+    <div class="row">${S.step>0?`<button class="btn ghost" id="prev">Anterior</button>`:""}
+      <button class="btn" id="next" ${useCam && !done?"disabled":""}>${S.step===n-1?"Terminar":"Siguiente"}</button></div>
+    ${useCam?`<button class="linkbtn" id="skip">No puedo hacer este paso con la cámara</button>`:`${S.camMode?`<p class="disclaimer">Este paso no se verifica con la cámara. Hazlo con calma y continúa.</p>`:""}`}`;
+}
+
+function check(){
+  const e = EXAMS[S.exam];
+  return `<button class="back" id="back-step">← Volver a los pasos</button>
+    <div class="stack"><span class="eyebrow">${e.name} · último paso</span><h1>¿Notaste algo de esto?</h1><p class="muted">Marca solo lo que sea nuevo o distinto al mes pasado.</p></div>
+    <div class="stack">${e.signs.map((s,i)=>`<div class="check"><input type="checkbox" id="sg-${i}" ${S.checked.has(i)?"checked":""}><label for="sg-${i}">${s}</label></div>`).join("")}</div>
+    <div class="field"><label for="note">Nota para ti (opcional)</label><textarea id="note" rows="3" placeholder="Por ejemplo: lunar en la espalda, lado izquierdo">${esc(S.note)}</textarea></div>
+    <button class="btn" id="finish">Guardar resultado</button>`;
+}
+
+function result(){
+  const e = EXAMS[S.exam], warn = S.checked.size>0, r = S.records[S.records.length-1];
+  const camSteps = e.steps.filter(s=>s.cam).length;
+  const quality = S.camMode ? `<div class="card stack"><h3>Tu técnica</h3><p><strong>${S.verified.size} de ${camSteps}</strong> pasos verificados con la cámara.</p>
+      ${S.verified.size<camSteps?`<p class="disclaimer">Los pasos sin verificar pueden haber quedado incompletos. La próxima vez, intenta hacerlos con la guía de la cámara.</p>`:`<p class="disclaimer">Hiciste todos los pasos guiados completos.</p>`}</div>`
+    : `<p class="disclaimer">Hiciste este autoexamen sin cámara. Prueba la guía con cámara para verificar tu técnica.</p>`;
+  if (!warn) return `<div class="result calm"><span class="tag">Registro guardado</span><h2>No marcaste signos de alarma</h2>
+      <p>Repítelo una vez al mes para notar cualquier cambio.</p><p class="disclaimer">Esto no descarta nada. Si algo te preocupa, consulta igual.</p></div>
+    ${quality}<button class="btn" id="back-home">Volver al inicio</button>`;
+  const marked = e.signs.filter((_,i)=>S.checked.has(i));
+  return `<div class="result warn"><span class="tag">Te recomendamos consultar</span>
+      <h2>Agenda una cita con un profesional de salud</h2>
+      <p>Marcaste:</p><ul class="signs">${marked.map(m=>`<li>${m}</li>`).join("")}</ul>
+      <p>Muchas de estas señales tienen causas que no son cáncer. Solo un profesional puede evaluarlas.</p></div>
+    <div class="card stack"><h3>Dónde consultar</h3>
+      <p>Tu centro de salud del MINSA, tu establecimiento de EsSalud o tu médico de confianza. ${S.exam==="boca"?"Para la boca, también tu dentista.":""}</p>
+      <p>Orientación gratuita del MINSA (Infosalud):</p>
+      <div class="copy"><code id="phone">113</code><button class="small-btn" id="copy">Copiar</button></div></div>
+    ${e.twoWeeks?`<div class="card stack"><h3>Regla de las dos semanas</h3><p>Si es una llaga o un bulto pequeño, vuelve a revisarlo en 14 días. Si sigue ahí, consulta sin esperar más.</p><button class="btn ghost" id="twoweeks">Avisarme en 14 días</button></div>`:""}
+    ${quality}<button class="btn" id="back-home">Volver al inicio</button>`;
+}
+
+function history(){
+  const recs = [...S.records].sort((a,b)=>b.date.localeCompare(a.date));
+  return `<div class="stack"><span class="eyebrow">Historial</span><h1>Tus registros</h1><p class="muted">Se guardan solo en este dispositivo.</p></div>
+    ${recs.length ? `<div class="stack">${recs.map(r=>`<div class="card rec t-${r.exam}">
+      <span class="date t-${r.exam}">${Number(r.date.slice(8))}<small>${MONTHS[Number(r.date.slice(5,7))-1]}</small></span>
+      <div class="stack" style="gap:6px"><div class="row" style="gap:8px;align-items:center"><strong>${EXAMS[r.exam].name}</strong>
+        ${r.signs.length?`<span class="pill warn">${r.signs.length} signo${r.signs.length>1?"s":""}</span>`:`<span class="pill ok">Sin signos</span>`}
+        ${r.example?`<span class="pill ex">Ejemplo</span>`:""}</div>
+        <p class="disclaimer">${r.verified} de ${r.total} pasos verificados con cámara</p>
+        ${r.signs.length?`<p class="muted">${r.signs.map(i=>EXAMS[r.exam].signs[i]).join(" · ")}</p>`:""}
+        ${r.note?`<p>${esc(r.note)}</p>`:""}</div></div>`).join("")}</div>`
+    : `<div class="card"><p>Aún no tienes registros. Haz tu primer autoexamen desde Inicio.</p></div>`}
+    ${recs.some(r=>r.example)?`<button class="btn ghost" id="clear-ex">Quitar ejemplos</button>`:""}`;
+}
+
+function info(){
+  if (!draft) draft = {...S.profile};
+  return `<div class="stack"><span class="eyebrow">Perfil</span><h1>Tus autoexámenes</h1></div>
+    ${profileForm(draft)}
+    <button class="btn" id="pf-save">Guardar cambios</button><p id="pf-msg" class="disclaimer" hidden></p>
+    <div class="card stack"><h3>Privacidad</h3><p>La cámara se procesa en tu teléfono, cuadro por cuadro, y nunca se graba ni se envía. Tus registros se guardan solo en este navegador.</p>
+      <button class="btn ghost" id="wipe">Borrar todos mis registros</button><p id="wipe-msg" class="disclaimer" hidden></p></div>
+    <div class="card stack"><h3>Sobre esta app</h3><p>Prototipo educativo. No diagnostica ni reemplaza la evaluación médica ni los tamizajes indicados para tu edad.</p>
+      <p class="disclaimer">Contenido basado en guías del INEN, NHS, Academia Americana de Dermatología, AAOMS, ADHA y Breastcancer.org.</p></div>`;
+}
+
+/* ---------- Cámara: guía y verificación en el dispositivo ---------- */
+const CAM = {stream:null, facing:"user", raf:0, demo:false, acc:0, last:0, prev:null, small:null, sctx:null, t0:0};
+function stopCamera(){
+  cancelAnimationFrame(CAM.raf); CAM.raf = 0;
+  if (CAM.stream){ CAM.stream.getTracks().forEach(t=>t.stop()); CAM.stream = null; }
+}
+async function startCamera(){
+  const vid = document.getElementById("vid");
+  try{
+    if (!navigator.mediaDevices?.getUserMedia) throw new Error("unsupported");
+    CAM.stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:CAM.facing, width:{ideal:640}, height:{ideal:480}}, audio:false});
+    vid.srcObject = CAM.stream; vid.hidden = false;
+    vid.classList.toggle("mirror", CAM.facing==="user");
+    await vid.play();
+    return true;
+  }catch(e){ return false; }
+}
+function cameraFailed(){
+  const box = document.getElementById("camfail");
+  box.hidden = false;
+  box.innerHTML = `<div class="notice"><strong>No se pudo abrir la cámara</strong>
+    <p>Revisa que diste permiso a la cámara en tu navegador. Si tu navegador no permite la cámara, puedes ver una demostración de cómo funciona la guía.</p>
+    <div class="row"><button class="btn" id="demo">Ver demostración</button><button class="btn ghost" id="manual">Seguir sin cámara</button></div></div>`;
+  document.getElementById("demo").onclick = () => { S.camMode = "demo"; box.hidden = true; CAM.demo = true; loop(); };
+  document.getElementById("manual").onclick = () => { S.camMode = null; render(); };
+}
+async function mountStep(){
+  const st = EXAMS[S.exam].steps[S.step];
+  if (!S.camMode || !st.cam) return;
+  CAM.acc = S.verified.has(S.step) ? st.cam.secs : 0; CAM.prev = null; CAM.last = performance.now(); CAM.t0 = CAM.last;
+  if (!CAM.small){ CAM.small = document.createElement("canvas"); CAM.small.width = 64; CAM.small.height = 48; CAM.sctx = CAM.small.getContext("2d", {willReadFrequently:true}); }
+  CAM.demo = S.camMode==="demo";
+  if (!CAM.demo){
+    if (!CAM.stream && !(await startCamera())){ cameraFailed(); drawOverlay(st.cam, {}, 0); return; }
+    if (CAM.stream){ const v = document.getElementById("vid"); v.srcObject = CAM.stream; v.hidden = false; v.classList.toggle("mirror", CAM.facing==="user"); v.play().catch(()=>{}); }
+  }
+  loop();
+}
+function measure(cam){
+  // Devuelve brillo medio (0-255), movimiento global y movimiento dentro de la zona objetivo.
+  if (CAM.demo){
+    const t = (performance.now()-CAM.t0)/1000;
+    const ready = t > 1.2;
+    return {bright:135, whole: cam.need==="still" ? (ready?1.5:9) : 4, zone: cam.need==="motion" ? (ready?14+4*Math.sin(t*6):1) : 1};
+  }
+  const v = document.getElementById("vid");
+  if (!v || v.readyState < 2) return null;
+  const c = CAM.sctx, W = 64, H = 48;
+  c.save();
+  if (CAM.facing==="user"){ c.translate(W,0); c.scale(-1,1); }
+  // object-fit: cover — recorta igual que la vista
+  const vr = v.videoWidth/v.videoHeight, br = 3/4;
+  let sw = v.videoWidth, sh = v.videoHeight, sx = 0, sy = 0;
+  if (vr > br){ sw = sh*br; sx = (v.videoWidth-sw)/2; } else { sh = sw/br; sy = (v.videoHeight-sh)/2; }
+  c.drawImage(v, sx, sy, sw, sh, 0, 0, W, H);
+  c.restore();
+  const d = c.getImageData(0,0,W,H).data, g = new Float32Array(W*H);
+  let sum = 0;
+  for (let i=0;i<W*H;i++){ g[i] = .299*d[i*4]+.587*d[i*4+1]+.114*d[i*4+2]; sum += g[i]; }
+  const res = {bright:sum/(W*H), whole:0, zone:0};
+  if (CAM.prev){
+    const [zx,zy,zw,zh] = cam.zone, x0 = Math.floor(zx*W), y0 = Math.floor(zy*H), x1 = Math.ceil((zx+zw)*W), y1 = Math.ceil((zy+zh)*H);
+    let wd = 0, zd = 0, zn = 0;
+    for (let y=0;y<H;y++) for (let x=0;x<W;x++){
+      const i = y*W+x, diff = Math.abs(g[i]-CAM.prev[i]); wd += diff;
+      if (x>=x0 && x<x1 && y>=y0 && y<y1){ zd += diff; zn++; }
+    }
+    res.whole = wd/(W*H); res.zone = zn ? zd/zn : 0;
+  }
+  CAM.prev = g;
+  return res;
+}
+function drawOverlay(cam, m, pct){
+  const ov = document.getElementById("ov"); if (!ov) return;
+  const r = ov.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  if (ov.width !== Math.round(r.width*dpr)){ ov.width = Math.round(r.width*dpr); ov.height = Math.round(r.height*dpr); }
+  const c = ov.getContext("2d"), W = ov.width, H = ov.height;
+  c.clearRect(0,0,W,H);
+  if (CAM.demo){
+    // Figura de demostración en lugar del video real
+    c.fillStyle = "#1B2B27"; c.fillRect(0,0,W,H);
+    c.fillStyle = "#2C4540";
+    c.beginPath(); c.ellipse(W*.5, H*.2, W*.13, H*.11, 0, 0, Math.PI*2); c.fill();
+    c.beginPath(); c.roundRect(W*.18, H*.33, W*.64, H*.7, W*.12); c.fill();
+    if (cam.need==="motion"){
+      const t = performance.now()/1000, [zx,zy,zw,zh] = cam.zone;
+      c.fillStyle = "#6E8F87";
+      c.beginPath(); c.arc(W*(zx+zw/2)+Math.cos(t*4)*W*zw*.2, H*(zy+zh/2)+Math.sin(t*4)*H*zh*.2, W*.045, 0, Math.PI*2); c.fill();
+    }
+  }
+  const [zx,zy,zw,zh] = cam.zone, ok = pct >= 1;
+  const color = ok ? "#7BD39C" : "#F2F7F5";
+  // Oscurecer fuera de la zona
+  c.fillStyle = "rgba(5,10,9,.45)";
+  c.beginPath(); c.rect(0,0,W,H);
+  if (cam.oval) c.ellipse(W*(zx+zw/2), H*(zy+zh/2), W*zw/2, H*zh/2, 0, 0, Math.PI*2, true);
+  else c.roundRect(W*zx, H*zy, W*zw, H*zh, 16*dpr);
+  c.fill("evenodd");
+  c.lineWidth = 3*dpr; c.strokeStyle = color; c.setLineDash(ok ? [] : [10*dpr, 8*dpr]);
+  c.beginPath();
+  if (cam.oval) c.ellipse(W*(zx+zw/2), H*(zy+zh/2), W*zw/2, H*zh/2, 0, 0, Math.PI*2);
+  else c.roundRect(W*zx, H*zy, W*zw, H*zh, 16*dpr);
+  c.stroke(); c.setLineDash([]);
+  // Anillo de progreso
+  const cx = W - 40*dpr, cy = H - 92*dpr, rad = 22*dpr;
+  c.lineWidth = 5*dpr; c.strokeStyle = "rgba(242,247,245,.25)";
+  c.beginPath(); c.arc(cx, cy, rad, 0, Math.PI*2); c.stroke();
+  c.strokeStyle = color; c.beginPath(); c.arc(cx, cy, rad, -Math.PI/2, -Math.PI/2 + Math.PI*2*Math.min(pct,1)); c.stroke();
+}
+function setChip(id, state, text){ const el = document.getElementById(id); if (!el) return; el.className = "chip" + (state===true?" ok":state===false?" bad":""); if (text) el.textContent = text; }
+function loop(){
+  const st = EXAMS[S.exam]?.steps[S.step];
+  if (S.view!=="step" || !st?.cam || !document.getElementById("ov")) return;
+  const now = performance.now(), dt = Math.min((now-CAM.last)/1000, .25); CAM.last = now;
+  const cam = st.cam, m = measure(cam);
+  if (m){
+    const light = m.bright > 55;
+    const cond = cam.need==="still" ? (m.whole < 4.5) : (m.zone > 7 && m.zone > m.whole*1.3);
+    setChip("c-light", light, light ? "Luz suficiente" : "Falta luz");
+    setChip("c-cond", cond, cam.need==="still" ? (cond?"Posición estable":"Quédate quieta/o") : (cond?"Movimiento correcto":"Mueve la mano en el recuadro"));
+    if (light && cond && !S.verified.has(S.step)) CAM.acc += dt;
+    const say = document.getElementById("say");
+    if (say && !S.verified.has(S.step)) say.textContent = !light ? "Busca un lugar con más luz" : cond ? "Muy bien, sigue así" : cam.say;
+  }
+  const pct = CAM.acc / cam.secs;
+  setChip("c-time", pct>=1 || null, `${Math.min(Math.floor(CAM.acc), cam.secs)} / ${cam.secs} s`);
+  drawOverlay(cam, m || {}, pct);
+  if (pct >= 1 && !S.verified.has(S.step)){
+    S.verified.add(S.step);
+    const n = document.getElementById("next"), ok = document.getElementById("okline"), say = document.getElementById("say");
+    if (n) n.disabled = false; if (ok) ok.hidden = false; if (say) say.textContent = "Paso verificado";
+    if (navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
+  }
+  CAM.raf = requestAnimationFrame(loop);
+}
+
+/* ---------- Eventos ---------- */
+function bind(){
+  const $ = id => document.getElementById(id), on = (id, fn) => { const el = $(id); if (el) el.onclick = fn; };
+  document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { draft = null; go(b.dataset.tab); });
+  document.querySelectorAll("[data-exam]").forEach(b => b.onclick = () => { S.exam = b.dataset.exam; go("intro"); });
+  document.querySelectorAll("[data-fu]").forEach(b => b.onclick = () => { const f = S.followups.find(x=>x.id===b.dataset.fu); if(f) f.done = true; persist(); render(); });
+  // Perfil
+  document.querySelectorAll("[data-sex]").forEach(b => b.onclick = () => { draft.sex = b.dataset.sex; Object.assign(draft, profileFromSex(draft.sex, draft)); render(); });
+  const bindBox = (id, key, rerender) => { const el = $(id); if (el) el.onchange = () => { draft[key] = el.checked; if (rerender) render(); }; };
+  bindBox("pf-mamas","mamas",true); bindBox("pf-test","testiculos",true); bindBox("pf-adult","adult"); bindBox("pf-rem","reminder",true);
+  const pd = $("pf-day"); if (pd) pd.onchange = () => draft.day = Number(pd.value);
+  on("pf-save", () => {
+    if (!myExams(draft).length){ draft.mamas = draft.mamas || false; }
+    const first = !S.profile; S.profile = {...draft}; persist();
+    if (first){ draft = null; go("home"); } else { const m = $("pf-msg"); m.hidden = false; m.textContent = "Cambios guardados."; }
+  });
+  // Autoexamen
+  on("back-home", () => go("home"));
+  const begin = cam => { S.step = 0; S.checked = new Set(); S.note = ""; S.verified = new Set(); S.camMode = cam; go("step"); };
+  on("start-cam", () => begin("live"));
+  on("start-manual", () => begin(null));
+  on("quit", () => go("intro"));
+  on("prev", () => { cancelAnimationFrame(CAM.raf); S.step--; render(); });
+  on("next", () => { cancelAnimationFrame(CAM.raf); if (S.step < EXAMS[S.exam].steps.length-1){ S.step++; render(); window.scrollTo(0,0); } else go("check"); });
+  on("skip", () => { cancelAnimationFrame(CAM.raf); if (S.step < EXAMS[S.exam].steps.length-1){ S.step++; render(); } else go("check"); });
+  on("flip", async () => { stopCamera(); CAM.facing = CAM.facing==="user" ? "environment" : "user"; CAM.prev = null; if (S.camMode==="live"){ if (!(await startCamera())) cameraFailed(); else loop(); } });
+  on("back-step", () => { S.step = EXAMS[S.exam].steps.length-1; go("step"); });
+  document.querySelectorAll(".check input").forEach(cb => cb.onchange = () => { const i = Number(cb.id.slice(3)); cb.checked ? S.checked.add(i) : S.checked.delete(i); });
+  const note = $("note"); if (note) note.oninput = () => S.note = note.value;
+  on("finish", () => {
+    const camSteps = EXAMS[S.exam].steps.filter(s=>s.cam).length;
+    S.records.push({id:String(Date.now()), exam:S.exam, date:iso(today), signs:[...S.checked].sort(), note:S.note.trim(), verified:S.camMode?S.verified.size:0, total:camSteps});
+    persist(); go("result");
+  });
+  on("copy", async () => { const b = $("copy"); try{ await navigator.clipboard.writeText("113"); b.textContent = "Copiado"; }catch(e){ const r = document.createRange(); r.selectNodeContents($("phone")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Selecciónalo y copia"; } });
+  on("twoweeks", () => { const d = new Date(today); d.setDate(d.getDate()+14); S.followups.push({id:String(Date.now()), date:iso(d), done:false}); persist(); const b = $("twoweeks"); b.textContent = `Listo: te avisamos el ${fmt(iso(d))}`; b.disabled = true; });
+  on("clear-ex", () => { S.records = S.records.filter(r=>!r.example); persist(); render(); });
+  on("wipe", () => {
+    const b = $("wipe"), m = $("wipe-msg");
+    if (b.dataset.confirm){ S.records = []; S.followups = []; persist(); m.hidden = false; m.textContent = "Registros borrados."; b.textContent = "Borrar todos mis registros"; delete b.dataset.confirm; }
+    else { b.dataset.confirm = "1"; b.textContent = "Toca de nuevo para confirmar"; }
+  });
+}
+window.addEventListener("pagehide", stopCamera);
+if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+render();
+</script>
+</body>
+</html>
