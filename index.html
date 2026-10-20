@@ -140,6 +140,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .chip.bad{background:#FFE1E8;color:#D63A57}
 .camtools{position:absolute;right:12px;bottom:12px;display:flex;gap:8px}
 .camtools button{background:rgba(255,255,255,.92);color:#121216;border:0;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700}
+.demo{display:flex;gap:14px;align-items:center;background:linear-gradient(155deg,var(--tint) 0%,var(--tint-2) 100%);border-radius:24px;padding:14px}
+.demo-fig{flex:0 0 112px}.demo-fig svg{width:112px;height:auto;display:block}
+.demo ol{margin:6px 0 0;padding-left:18px;font-size:.9rem;display:flex;flex-direction:column;gap:4px}
+.demo strong{font-size:.95rem}
 .verified{display:flex;gap:10px;align-items:center;font-weight:700;color:var(--ok)}
 .notice{background:var(--alert-soft);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
 
@@ -386,6 +390,50 @@ function abcdeTable(){
   ${ABCDE.map(r=>`<tr><td><strong>${r[0]}</strong></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div></div>`;
 }
 
+/* ---------- Ejemplos animados de cada movimiento ---------- */
+const DEMO_MAP = {
+  mama:["front","armsup","circles","axilla","circles:m","axilla:m"],
+  piel:["front","turn","armsup","arm"],
+  testiculo:["front","roll","roll"],
+  boca:["","neck","mouth","cheek","tongue","mouth"]
+};
+const DEMOS = {
+  front:{title:"Quédate quieta/o", how:["Párate de frente, a unos 2 metros.","Brazos relajados a los lados.","No te muevas hasta que el aro se llene."]},
+  armsup:{title:"Levanta los brazos", how:["Sube ambos brazos despacio por encima de la cabeza.","Bájalos y vuelve a subirlos.","Mira si la piel se hunde o se jala."]},
+  circles:{title:"Círculos con las yemas", how:["Pon el brazo detrás de la cabeza.","Con 3 dedos de la otra mano, haz círculos pequeños sobre la mama.","Parte del pezón y ve hacia afuera, como un caracol."]},
+  axilla:{title:"Palpa la axila", how:["Deja el brazo ligeramente levantado.","Sube y baja los dedos por la axila.","Termina sobre la clavícula."]},
+  turn:{title:"Gira despacio", how:["Date la vuelta lentamente, como un cuarto de vuelta cada vez.","Muestra espalda y costados a la cámara.","Usa un espejo de mano para zonas difíciles."]},
+  arm:{title:"Acerca el brazo", how:["Estira el brazo hacia el recuadro.","Gíralo para ver la palma y el dorso.","Quédate quieta/o unos segundos."]},
+  roll:{title:"Ruédalo entre los dedos", how:["Sostén el testículo con ambas manos.","Haz rodar suavemente entre el pulgar y los dedos.","Debe sentirse liso y firme, sin dolor."]},
+  neck:{title:"Palpa el cuello", how:["Con las yemas, recorre bajo la mandíbula.","Baja por el costado del cuello, de un lado y luego del otro.","Ve lento y con presión suave."]},
+  mouth:{title:"Abre la boca", how:["Acércate al recuadro con buena luz.","Abre la boca o separa los labios.","Mantén la posición, sin moverte."]},
+  cheek:{title:"Separa la mejilla", how:["Con un dedo, jala la comisura de la boca hacia un lado.","Mira el interior de la mejilla.","Repite del otro lado."]},
+  tongue:{title:"Saca la lengua", how:["Saca la lengua lo más que puedas.","Quédate quieta/o un momento.","Luego levántala para ver abajo y a los lados."]}
+};
+function demoSVG(kind, mirror){
+  const L = 'stroke="var(--tint-deep)" stroke-width="5" stroke-linecap="round" fill="none"';
+  const A = 'fill="var(--accent)"';
+  const an = (attr, vals, dur) => `<animate attributeName="${attr}" values="${vals}" dur="${dur}s" repeatCount="indefinite"/>`;
+  const body = `<circle cx="60" cy="26" r="14" ${L}/><path d="M60 40v6M40 52q20-10 40 0M44 52v56h32V52" ${L}/>`;
+  let g = "";
+  if (kind==="front") g = body+`<path d="M40 54L34 100M80 54L86 100" ${L}/>`+`<circle cx="60" cy="76" r="26" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 4">${an("r","26;29;26",2)}</circle>`;
+  else if (kind==="armsup") g = body+`<line x1="40" y1="54" x2="34" y2="100" ${L}>${an("x2","34;30;34",2.4)}${an("y2","100;8;100",2.4)}</line><line x1="80" y1="54" x2="86" y2="100" ${L}>${an("x2","86;90;86",2.4)}${an("y2","100;8;100",2.4)}</line>`;
+  else if (kind==="circles") g = body+`<path d="M40 54L34 100M80 54L92 36L68 22" ${L}/><circle cx="48" cy="78" r="5" ${A}>${an("cx","48;54;48;42;48",2)}${an("cy","72;78;84;78;72",2)}</circle><circle cx="48" cy="78" r="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".4"/>`;
+  else if (kind==="axilla") g = body+`<path d="M80 54L34 100M40 54L96 30" ${L}/><circle cx="76" cy="62" r="5" ${A}>${an("cy","56;74;56",1.6)}${an("cx","78;80;78",1.6)}</circle>`;
+  else if (kind==="turn") g = `<g transform="translate(60 0)"><g><animateTransform attributeName="transform" type="scale" values="1 1;0.2 1;1 1;0.2 1;1 1" dur="4s" repeatCount="indefinite"/><g transform="translate(-60 0)">${body}<path d="M40 54L34 100M80 54L86 100" ${L}/></g></g></g>`;
+  else if (kind==="arm") g = body+`<path d="M80 54L108 70" ${L}/><ellipse cx="114" cy="72" rx="6" ry="9" ${A}>${an("rx","6;2;6",2)}</ellipse><path d="M40 54L34 100" ${L}/>`;
+  else if (kind==="roll") g = `<ellipse cx="60" cy="76" rx="16" ry="22" fill="var(--tint)" stroke="var(--tint-deep)" stroke-width="4"/><circle cx="36" cy="66" r="6" ${A}>${an("cy","62;90;62",2)}</circle><circle cx="84" cy="90" r="6" ${A}>${an("cy","90;62;90",2)}</circle>`;
+  else if (kind==="neck") g = `<circle cx="60" cy="40" r="26" ${L}/><path d="M48 66v22M72 66v22M34 88q26 14 52 0" ${L}/><circle cx="46" cy="74" r="5" ${A}>${an("cx","46;60;74;60;46",3)}${an("cy","72;84;72;84;72",3)}</circle>`;
+  else if (kind==="mouth"||kind==="tongue") g = `<circle cx="60" cy="60" r="38" ${L}/><circle cx="46" cy="48" r="3" fill="var(--tint-deep)"/><circle cx="74" cy="48" r="3" fill="var(--tint-deep)"/><ellipse cx="60" cy="78" rx="14" ry="3" fill="var(--tint-deep)">${an("ry","3;11;3",2.4)}</ellipse>`+(kind==="tongue"?`<ellipse cx="60" cy="84" rx="8" ry="3" fill="#F08A9B">${an("cy","80;96;80",2.4)}${an("ry","3;10;3",2.4)}</ellipse>`:"");
+  else if (kind==="cheek") g = `<circle cx="60" cy="60" r="38" ${L}/><circle cx="46" cy="48" r="3" fill="var(--tint-deep)"/><circle cx="74" cy="48" r="3" fill="var(--tint-deep)"/><path d="M46 80q14 6 28 0" ${L}/><circle cx="76" cy="80" r="5" ${A}>${an("cx","76;96;76",2)}</circle>`;
+  return `<svg viewBox="0 0 130 120" role="img" aria-label="Ejemplo animado: ${DEMOS[kind].title}"><g ${mirror?'transform="translate(130 0) scale(-1 1)"':""}>${g}</g></svg>`;
+}
+function demoCard(exam, idx){
+  const d = (DEMO_MAP[exam]||[])[idx]; if (!d) return "";
+  const [kind, m] = d.split(":"), D = DEMOS[kind];
+  return `<div class="demo"><div class="demo-fig">${demoSVG(kind, m==="m")}</div><div class="stack"><strong>Cómo se hace: ${D.title}</strong><ol>${D.how.map(x=>`<li>${x}</li>`).join("")}</ol></div></div>`;
+}
+
 function step(){
   const e = EXAMS[S.exam], st = e.steps[S.step], n = e.steps.length;
   const useCam = S.camMode && st.cam;
@@ -401,6 +449,7 @@ function step(){
         <div class="camtools"><button id="flip">Cambiar cámara</button></div>
       </div>
       <div id="camfail" hidden></div>`:""}
+    ${demoCard(S.exam,S.step)}
     <div class="stack"><h2>${st.t}</h2><p>${st.b}</p>${st.tip?`<p class="tip">${st.tip}</p>`:""}</div>
     ${useCam?`<p class="verified" id="okline" ${done?"":"hidden"}>✓ Paso verificado</p>`:""}
     <div class="row">${S.step>0?`<button class="btn ghost" id="prev">Anterior</button>`:""}
