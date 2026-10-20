@@ -584,7 +584,7 @@ function loop(){
     const light = m.bright > 55;
     const cond = cam.need==="still" ? (m.whole < 4.5) : (m.zone > 7 && m.zone > m.whole*1.3);
     setChip("c-light", light, light ? "Luz suficiente" : "Falta luz");
-    setChip("c-cond", cond, cam.need==="still" ? (cond?"Posición estable":"Quédate quieta/o") : (cond?"Movimiento correcto":"Mueve la mano en el recuadro"));
+    setChip("c-cond", cond, cam.need==="still" ? (cond?"Posición estable":"Hay movimiento: quédate quieta/o") : (cond?"Movimiento detectado":"Sin movimiento en el recuadro"));
     if (light && cond && !S.verified.has(S.step)) CAM.acc += dt;
     const say = document.getElementById("say");
     if (say && !S.verified.has(S.step)) say.textContent = !light ? "Busca un lugar con más luz" : cond ? "Muy bien, sigue así" : cam.say;
