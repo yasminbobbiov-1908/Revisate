@@ -144,6 +144,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .demo-fig{flex:0 0 112px}.demo-fig svg{width:112px;height:auto;display:block}
 .demo ol{margin:6px 0 0;padding-left:18px;font-size:.9rem;display:flex;flex-direction:column;gap:4px}
 .demo strong{font-size:.95rem}
+.more{margin:2px 0 6px 34px}.more summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:.88rem}
+.intro-more,.stack>.more{margin-left:0}
+.expair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.ex{margin:0}.ex svg{width:100%;height:auto;display:block;border-radius:14px}
+.ex figcaption{font-size:.82rem;color:var(--muted);margin-top:4px;line-height:1.3}.ex figcaption b{display:block;font-size:.8rem}
+.ex.ok figcaption b{color:var(--ok)}.ex.bad figcaption b{color:var(--alert)}
 .verified{display:flex;gap:10px;align-items:center;font-weight:700;color:var(--ok)}
 .notice{background:var(--alert-soft);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
 
@@ -377,6 +383,7 @@ function intro(){
   return `<button class="back" id="back-home">← Inicio</button>
     <div class="card tinted stack"><div class="row" style="align-items:center;justify-content:space-between"><span class="glyph" aria-hidden="true">${e.glyph}</span><span class="pill soft">${n} pasos · 5 min</span></div><h1>${e.name}</h1><p>${e.intro}</p></div>
     <div class="card stack"><h3>Cuándo hacerlo</h3><p>${e.freq}</p></div>
+    ${exAll(S.exam)}
     ${e.abcde ? abcdeTable() : ""}
     <div class="card stack"><h3>Cómo te guía la cámara</h3>
       <p>${e.framing}</p>
@@ -385,6 +392,56 @@ function intro(){
     ${can?`<button class="btn" id="start-cam">Empezar con cámara</button><button class="btn ghost" id="start-manual">Empezar sin cámara</button>`
          :`<div class="notice"><p>La guía con cámara para este autoexamen está disponible solo para personas de 18 años o más. Puedes hacerlo con la guía paso a paso.</p></div><button class="btn" id="start-manual">Empezar</button>`}`;
 }
+/* ---------- Ejemplos de posibles hallazgos (esquemáticos, no son fotos) ---------- */
+const P = {
+  skin:'var(--tint-2)', brown:'#8A5A36', dark:'#3B2416', red:'#D63A57', blue:'#4A5FB5', pink:'#F08A9B', tan:'#C99A74', line:'var(--tint-deep)'
+};
+const mole = (x,y,r,c=P.brown) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;
+const irregular = (x,y,s=1) => `<path transform="translate(${x} ${y}) scale(${s})" d="M-14 -4Q-10 -16 0 -12Q6 -18 14 -8Q18 2 10 8Q12 16 0 14Q-10 18 -14 6Q-18 0 -14 -4Z" fill="${P.brown}"/><path transform="translate(${x} ${y}) scale(${s})" d="M0 -12Q6 -18 14 -8Q18 2 10 8Q2 4 0 -4Z" fill="${P.dark}"/><path transform="translate(${x} ${y}) scale(${s})" d="M-14 6Q-18 0 -14 -4Q-8 -2 -6 6Z" fill="${P.red}" opacity=".85"/>`;
+const bust = (x,y,r=20) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${P.tan}" opacity=".55" stroke="${P.line}" stroke-width="2"/><circle cx="${x}" cy="${y+3}" r="3" fill="${P.brown}"/>`;
+const oval = (x,y,rx=14,ry=18) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${P.tan}" opacity=".7" stroke="${P.line}" stroke-width="2"/>`;
+const EXD = {
+  piel:[
+    {n:"Mitades iguales, borde liso y un solo color.", a:"Mitades distintas, borde irregular y varios colores.", d:[mole(50,45,14), irregular(50,45)]},
+    {n:"Más pequeño que una goma de lápiz (unos 6 mm).", a:"Más grande que una goma de lápiz y sigue creciendo.", d:[mole(50,45,7), mole(50,45,20)]},
+    {n:"Se ve igual que el mes pasado.", a:"Cambió de tamaño, forma o color respecto al mes pasado.", d:[mole(50,45,10), `<circle cx="50" cy="45" r="10" fill="none" stroke="${P.line}" stroke-dasharray="3 3"/>${irregular(50,45,.95)}`]},
+    {n:"Tus lunares se parecen entre sí.", a:"Un lunar no se parece a los demás (el \"patito feo\").", d:[mole(26,32,8)+mole(70,30,8)+mole(34,64,8)+mole(72,62,8), mole(26,32,8)+mole(70,30,8)+mole(34,64,8)+irregular(72,62,.8)]},
+    {n:"La piel se cura en pocas semanas.", a:"Una herida o costra que no cicatriza en más de 4 semanas.", d:[`<path d="M30 50Q50 44 70 50" stroke="${P.tan}" stroke-width="4" fill="none"/>`, `<path d="M32 38Q46 28 66 36Q74 50 62 62Q44 70 34 58Z" fill="${P.red}" opacity=".8"/><path d="M42 46Q52 42 58 50Q52 58 44 54Z" fill="#F6E6C4"/>`]},
+    {n:"Un lunar que no molesta.", a:"Un lunar que pica, duele o sangra sin motivo.", d:[mole(50,45,12), mole(50,40,12)+`<path d="M46 56q-3 8 0 12q3-4 0-12ZM56 56q-3 8 0 12q3-4 0-12Z" fill="${P.red}"/>`]}
+  ],
+  mama:[
+    {n:"Superficie lisa al tacto.", a:"Un bulto o una zona endurecida que no estaba antes.", d:[bust(50,45), bust(50,45)+`<circle cx="60" cy="38" r="5" fill="${P.dark}" opacity=".7"/>`]},
+    {n:"Mamas parecidas entre sí, con pequeñas diferencias de siempre.", a:"Un cambio nuevo en el tamaño o la forma de una mama.", d:[bust(34,45,17)+bust(68,45,17), bust(34,45,17)+`<ellipse cx="68" cy="50" rx="13" ry="10" fill="${P.tan}" opacity=".55" stroke="${P.line}" stroke-width="2"/>`]},
+    {n:"Piel lisa y del mismo color.", a:"Piel roja, escamosa o con puntitos como cáscara de naranja.", d:[bust(50,45), bust(50,45)+Array.from({length:14},(_, i)=>`<circle cx="${34+(i%5)*8}" cy="${34+Math.floor(i/5)*9}" r="1.4" fill="${P.red}"/>`).join("")]},
+    {n:"Piel y pezón sin hundimientos.", a:"Un hoyuelo, arruga o pezón que se hunde hacia adentro.", d:[bust(50,45), bust(50,45)+`<path d="M44 46Q50 40 56 46M42 50Q50 58 58 50" stroke="${P.dark}" stroke-width="1.8" fill="none"/>`]},
+    {n:"Pezón seco, sin líquido.", a:"Secreción por el pezón, sobre todo si tiene sangre.", d:[bust(50,45), bust(50,45)+`<path d="M50 50q-4 9 0 13q4-4 0-13Z" fill="${P.red}"/>`]},
+    {n:"Molestias leves ligadas a la menstruación.", a:"Dolor que persiste fuera de la menstruación.", d:[bust(50,45), bust(50,45)+`<path d="M22 20l8 6-6 4 8 6M78 20l-8 6 6 4-8 6" stroke="${P.red}" stroke-width="2.4" fill="none"/>`]}
+  ],
+  testiculo:[
+    {n:"Superficie lisa y firme.", a:"Un bulto duro, como un guisante, en el testículo.", d:[oval(50,45,17,22), oval(50,45,17,22)+`<circle cx="60" cy="38" r="5" fill="${P.dark}" opacity=".7"/>`]},
+    {n:"Tamaños parecidos (una ligera diferencia es normal).", a:"Un testículo que crece o se achica claramente.", d:[oval(34,48,13,17)+oval(66,48,13,17), oval(34,48,13,17)+oval(66,50,18,24)]},
+    {n:"Sensación liviana, sin pesadez.", a:"Sensación de peso o líquido que aparece de repente.", d:[oval(50,40,15,19), oval(50,52,15,19)+`<path d="M50 14v14M44 22l6 8 6-8" stroke="${P.red}" stroke-width="2.4" fill="none"/>`]},
+    {n:"Sin molestias en abdomen o ingle.", a:"Dolor sordo en la parte baja del abdomen o la ingle.", d:[`<path d="M30 25h40v38q-20 12-40 0Z" fill="${P.tan}" opacity=".55" stroke="${P.line}" stroke-width="2"/>`, `<path d="M30 25h40v38q-20 12-40 0Z" fill="${P.tan}" opacity=".55" stroke="${P.line}" stroke-width="2"/><path d="M36 50l8-6-6-4 8-6M64 50l-8-6 6-4-8-6" stroke="${P.red}" stroke-width="2.4" fill="none"/>`]}
+  ],
+  boca:[
+    {n:"Mucosa rosada y pareja.", a:"Una mancha blanca, roja o mezcla de ambas.", d:[`<rect x="18" y="26" width="64" height="38" rx="19" fill="${P.pink}" opacity=".7"/>`, `<rect x="18" y="26" width="64" height="38" rx="19" fill="${P.pink}" opacity=".7"/><ellipse cx="44" cy="46" rx="11" ry="7" fill="#fff" opacity=".95"/><ellipse cx="62" cy="44" rx="7" ry="5" fill="${P.red}"/>`]},
+    {n:"Cualquier heridita cierra en unos días.", a:"Una llaga que no cicatriza en 2–3 semanas o sangra fácil.", d:[`<rect x="18" y="26" width="64" height="38" rx="19" fill="${P.pink}" opacity=".7"/>`, `<rect x="18" y="26" width="64" height="38" rx="19" fill="${P.pink}" opacity=".7"/><circle cx="50" cy="46" r="9" fill="${P.red}"/><circle cx="50" cy="46" r="5" fill="#F6E6C4"/>`]},
+    {n:"Tejidos blandos y parejos.", a:"Un bulto o engrosamiento que se siente al palpar.", d:[`<rect x="18" y="26" width="64" height="38" rx="19" fill="${P.pink}" opacity=".7"/>`, `<rect x="18" y="26" width="64" height="38" rx="19" fill="${P.pink}" opacity=".7"/><circle cx="58" cy="46" r="8" fill="${P.dark}" opacity=".55"/>`]},
+    {n:"Masticar y tragar sin esfuerzo.", a:"Dificultad nueva para masticar o tragar.", d:[`<path d="M42 16v60M58 16v60" stroke="${P.line}" stroke-width="3"/>`, `<path d="M42 16v60M58 16v60" stroke="${P.line}" stroke-width="3"/><ellipse cx="50" cy="46" rx="8" ry="6" fill="${P.red}" opacity=".85"/>`]},
+    {n:"Voz estable.", a:"Dolor de garganta o ronquera que no se va en semanas.", d:[`<path d="M14 45Q26 25 38 45T62 45T86 45" stroke="${P.line}" stroke-width="3" fill="none"/>`, `<path d="M14 45Q22 35 30 45L34 30L40 60L46 45H60L66 38L72 52H86" stroke="${P.red}" stroke-width="3" fill="none"/>`]},
+    {n:"Cuello sin bultos.", a:"Un bulto firme en el cuello que no se mueve y no duele.", d:[`<path d="M38 12v34Q38 62 50 66Q62 62 62 46V12" fill="${P.tan}" opacity=".55" stroke="${P.line}" stroke-width="2"/>`, `<path d="M38 12v34Q38 62 50 66Q62 62 62 46V12" fill="${P.tan}" opacity=".55" stroke="${P.line}" stroke-width="2"/><circle cx="62" cy="40" r="8" fill="${P.dark}" opacity=".6"/>`]}
+  ]
+};
+const NOTE = `<p class="disclaimer">Ilustración esquemática, no es una foto. Muchas de estas señales tienen causas que no son cáncer: solo un profesional puede evaluarlas.</p>`;
+function exPair(exam, i, note=true){
+  const e = EXD[exam]?.[i]; if (!e) return "";
+  const panel = (inner, label, cls, txt) => `<figure class="ex ${cls}"><svg viewBox="0 0 100 90" role="img" aria-label="${label}"><rect width="100" height="90" rx="14" fill="${P.skin}"/>${inner}</svg><figcaption><b>${label}</b>${txt}</figcaption></figure>`;
+  return `<div class="expair">${panel(e.d[0],"Lo habitual","ok",e.n)}${panel(e.d[1],"Para consultar","bad",e.a)}</div>${note?NOTE:""}`;
+}
+function exAll(exam){
+  return `<details class="more"><summary>Qué buscar: ejemplos</summary><div class="stack">${EXAMS[exam].signs.map((s,i)=>`<div class="stack"><strong>${s}</strong>${exPair(exam,i,false)}</div>`).join("")}${NOTE}</div></details>`;
+}
+
 function abcdeTable(){
   return `<div class="card stack"><h3>Regla ABCDE</h3><div class="tablewrap"><table><thead><tr><th></th><th>Qué mirar</th><th>Sospechoso si</th></tr></thead><tbody>
   ${ABCDE.map(r=>`<tr><td><strong>${r[0]}</strong></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div></div>`;
@@ -461,7 +518,7 @@ function check(){
   const e = EXAMS[S.exam];
   return `<button class="back" id="back-step">← Volver a los pasos</button>
     <div class="stack"><span class="eyebrow">${e.name} · último paso</span><h1>¿Notaste algo de esto?</h1><p class="muted">Marca solo lo que sea nuevo o distinto al mes pasado.</p></div>
-    <div class="stack">${e.signs.map((s,i)=>`<div class="check"><input type="checkbox" id="sg-${i}" ${S.checked.has(i)?"checked":""}><label for="sg-${i}">${s}</label></div>`).join("")}</div>
+    <div class="stack">${e.signs.map((s,i)=>`<div class="check"><input type="checkbox" id="sg-${i}" ${S.checked.has(i)?"checked":""}><label for="sg-${i}">${s}</label></div>${EXD[S.exam]?.[i]?`<details class="more"><summary>Ver ejemplo</summary>${exPair(S.exam,i)}</details>`:""}`).join("")}</div>
     <div class="field"><label for="note">Nota para ti (opcional)</label><textarea id="note" rows="3" placeholder="Por ejemplo: lunar en la espalda, lado izquierdo">${esc(S.note)}</textarea></div>
     <button class="btn" id="finish">Guardar resultado</button>`;
 }
