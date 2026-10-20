@@ -141,7 +141,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .camtools{position:absolute;right:12px;bottom:12px;display:flex;gap:8px}
 .camtools button{background:rgba(255,255,255,.92);color:#121216;border:0;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700}
 .demo{display:flex;gap:14px;align-items:center;background:linear-gradient(155deg,var(--tint) 0%,var(--tint-2) 100%);border-radius:24px;padding:14px}
-.demo-fig{flex:0 0 112px}.demo-fig svg{width:112px;height:auto;display:block}
+.demo-fig{flex:0 0 120px}.demo-fig svg{width:120px;height:auto;display:block}
 .demo ol{margin:6px 0 0;padding-left:18px;font-size:.9rem;display:flex;flex-direction:column;gap:4px}
 .demo strong{font-size:.95rem}
 .more{margin:2px 0 6px 34px}.more summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:.88rem}
@@ -150,6 +150,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .ex{margin:0}.ex svg{width:100%;height:auto;display:block;border-radius:14px}
 .ex figcaption{font-size:.82rem;color:var(--muted);margin-top:4px;line-height:1.3}.ex figcaption b{display:block;font-size:.8rem}
 .ex.ok figcaption b{color:var(--ok)}.ex.bad figcaption b{color:var(--alert)}
+.reps{display:flex;gap:6px;flex-wrap:wrap}
+.rep{background:rgba(255,255,255,.85);color:#4A4A58;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
+.rep.cur{background:#fff;color:#121216;outline:2px solid var(--accent)}.rep.ok{background:#DDF3EA;color:#1F8C64}
 .verified{display:flex;gap:10px;align-items:center;font-weight:700;color:var(--ok)}
 .notice{background:var(--alert-soft);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
 
@@ -202,11 +205,11 @@ const EXAMS = {
     framing:"Apoya el celular frente a ti, a la altura del pecho, a unos 60 cm.",
     steps:[
       {t:"Frente al espejo", b:"Brazos abajo. Mira la forma, el tamaño y el color de ambas mamas.", tip:"Busca diferencias nuevas, no las asimetrías de siempre.", cam:{zone:[.15,.32,.7,.42], need:"still", secs:4, say:"Encuadra tu pecho en el recuadro y quédate quieta"}},
-      {t:"Brazos arriba", b:"Levanta los brazos y vuelve a mirar. Observa hundimientos de la piel o del pezón.", cam:{zone:[.1,.05,.8,.32], need:"motion", secs:2, say:"Levanta los brazos dentro del recuadro superior"}},
-      {t:"Palpa la mama derecha", b:"Brazo derecho detrás de la cabeza. Con las yemas de tres dedos de la mano izquierda, haz círculos pequeños del pezón hacia afuera.", tip:"Usa presión suave, media y firme. Puedes hacerlo de pie o acostada.", cam:{zone:[.5,.34,.42,.4], need:"motion", secs:20, say:"Mueve los dedos en círculos dentro del recuadro"}},
-      {t:"Axila derecha", b:"Palpa la axila y la zona sobre la clavícula buscando bultos.", cam:{zone:[.62,.2,.34,.3], need:"motion", secs:8, say:"Palpa la axila dentro del recuadro"}},
-      {t:"Palpa la mama izquierda", b:"Repite con el brazo izquierdo detrás de la cabeza y la mano derecha.", cam:{zone:[.08,.34,.42,.4], need:"motion", secs:20, say:"Mueve los dedos en círculos dentro del recuadro"}},
-      {t:"Axila izquierda", b:"Palpa la axila izquierda y la zona sobre la clavícula.", cam:{zone:[.04,.2,.34,.3], need:"motion", secs:8, say:"Palpa la axila dentro del recuadro"}},
+      {t:"Brazos arriba", b:"Levanta los brazos y vuelve a mirar. Observa hundimientos de la piel o del pezón.", cam:{zone:[.1,.05,.8,.32], need:"motion", secs:2, say:"Levanta los brazos"}},
+      {t:"Palpa la mama derecha", b:"Brazo derecho detrás de la cabeza. Con las yemas de tres dedos de la mano izquierda, haz círculos pequeños del pezón hacia afuera.", tip:"Usa presión suave, media y firme. Puedes hacerlo de pie o acostada.", cam:{zone:[.5,.34,.42,.4], need:"motion", secs:18, reps:3, repLabels:["Suave","Media","Firme"], say:"Haz círculos pequeños con las yemas de los dedos"}},
+      {t:"Axila derecha", b:"Palpa la axila y la zona sobre la clavícula buscando bultos.", cam:{zone:[.62,.2,.34,.3], need:"motion", secs:8, say:"Palpa la axila"}},
+      {t:"Palpa la mama izquierda", b:"Repite con el brazo izquierdo detrás de la cabeza y la mano derecha.", cam:{zone:[.08,.34,.42,.4], need:"motion", secs:18, reps:3, repLabels:["Suave","Media","Firme"], say:"Haz círculos pequeños con las yemas de los dedos"}},
+      {t:"Axila izquierda", b:"Palpa la axila izquierda y la zona sobre la clavícula.", cam:{zone:[.04,.2,.34,.3], need:"motion", secs:8, say:"Palpa la axila"}},
       {t:"Pezones", b:"Presiona suavemente cada pezón y observa si sale algún líquido.", cam:null}
     ],
     signs:["Bulto o engrosamiento en la mama o la axila","Cambio de tamaño o de forma","Piel roja, escamosa o con aspecto de cáscara de naranja","Hundimiento de la piel o del pezón","Secreción por el pezón, sobre todo con sangre","Dolor persistente fuera del periodo menstrual"]
@@ -235,8 +238,8 @@ const EXAMS = {
     framing:"Apoya el celular frente a ti, a la altura de la cadera, a unos 60 cm.",
     steps:[
       {t:"Observa", b:"Mira el escroto y busca hinchazón en la piel.", cam:{zone:[.25,.35,.5,.35], need:"still", secs:4, say:"Encuadra la zona en el recuadro y quédate quieto"}},
-      {t:"Testículo derecho", b:"Ruédalo suavemente entre el pulgar y los dedos de ambas manos. No debería doler.", tip:"Lo normal es una superficie lisa y firme.", cam:{zone:[.48,.35,.3,.35], need:"motion", secs:15, say:"Rueda el testículo con los dedos dentro del recuadro"}},
-      {t:"Testículo izquierdo", b:"Repite con el otro testículo.", cam:{zone:[.22,.35,.3,.35], need:"motion", secs:15, say:"Rueda el testículo con los dedos dentro del recuadro"}},
+      {t:"Testículo derecho", b:"Ruédalo suavemente entre el pulgar y los dedos de ambas manos. No debería doler.", tip:"Lo normal es una superficie lisa y firme.", cam:{zone:[.48,.35,.3,.35], need:"motion", secs:15, say:"Rueda el testículo con los dedos"}},
+      {t:"Testículo izquierdo", b:"Repite con el otro testículo.", cam:{zone:[.22,.35,.3,.35], need:"motion", secs:15, say:"Rueda el testículo con los dedos"}},
       {t:"Ubica el epidídimo", b:"Detrás de cada testículo hay un tubo blando: es el epidídimo. Es normal, no lo confundas con un bulto.", cam:null},
       {t:"Compara ambos lados", b:"Que uno sea algo más grande es normal. Fíjate en cambios respecto al mes pasado.", cam:null}
     ],
@@ -249,11 +252,11 @@ const EXAMS = {
     framing:"Sostén el celular con la cámara frontal a unos 30 cm de tu cara, con buena luz.",
     steps:[
       {t:"Cara", b:"Compara ambos lados de la cara y busca hinchazones o cambios en la piel.", cam:{zone:[.2,.12,.6,.56], need:"still", secs:4, say:"Centra tu cara en el óvalo y quédate quieto", oval:true}},
-      {t:"Cuello y mandíbula", b:"Palpa bajo la mandíbula y a lo largo del músculo de cada lado del cuello.", tip:"Alerta con un bulto firme, que no se mueve y no duele.", cam:{zone:[.15,.6,.7,.3], need:"motion", secs:10, say:"Palpa tu cuello con los dedos dentro del recuadro"}},
+      {t:"Cuello y mandíbula", b:"Palpa bajo la mandíbula y a lo largo del músculo de cada lado del cuello.", tip:"Alerta con un bulto firme, que no se mueve y no duele.", cam:{zone:[.15,.6,.7,.3], need:"motion", secs:10, say:"Palpa tu cuello con los dedos"}},
       {t:"Labios y encías", b:"Levanta el labio superior y baja el inferior. Revisa llagas, cambios de color o sangrado.", cam:{zone:[.3,.42,.4,.2], need:"still", secs:4, say:"Acerca la boca al recuadro y mantén los labios separados"}},
-      {t:"Mejillas", b:"Separa la comisura con los dedos y mira el interior de cada mejilla.", cam:{zone:[.3,.42,.4,.2], need:"motion", secs:4, say:"Separa la mejilla dentro del recuadro"}},
-      {t:"Lengua", b:"Sácala, sujétala con la gasa y revisa arriba, abajo y ambos bordes.", cam:{zone:[.3,.45,.4,.25], need:"still", secs:5, say:"Saca la lengua dentro del recuadro y mantenla quieta"}},
-      {t:"Piso y paladar", b:"Con la punta de la lengua en el paladar, mira el piso de la boca. Luego inclina la cabeza y mira el paladar.", cam:{zone:[.3,.38,.4,.28], need:"still", secs:4, say:"Abre la boca dentro del recuadro"}}
+      {t:"Mejillas", b:"Separa la comisura con los dedos y mira el interior de cada mejilla.", cam:{zone:[.3,.42,.4,.2], need:"motion", secs:4, say:"Separa la mejilla"}},
+      {t:"Lengua", b:"Sácala, sujétala con la gasa y revisa arriba, abajo y ambos bordes.", cam:{zone:[.3,.45,.4,.25], need:"still", secs:5, say:"Saca la lengua y mantenla quieta"}},
+      {t:"Piso y paladar", b:"Con la punta de la lengua en el paladar, mira el piso de la boca. Luego inclina la cabeza y mira el paladar.", cam:{zone:[.3,.38,.4,.28], need:"still", secs:4, say:"Abre la boca"}}
     ],
     signs:["Mancha blanca, roja o mixta","Llaga que no cicatriza o sangra con facilidad","Bulto o engrosamiento de los tejidos","Dificultad para masticar o tragar","Dolor de garganta o ronquera que no se van","Bulto en el cuello"]
   }
@@ -387,7 +390,7 @@ function intro(){
     ${e.abcde ? abcdeTable() : ""}
     <div class="card stack"><h3>Cómo te guía la cámara</h3>
       <p>${e.framing}</p>
-      <p>${nc} de ${n} pasos se verifican con la cámara: la app revisa que haya buena luz, que estés bien encuadrada o encuadrado y que tus manos se muevan en la zona correcta el tiempo suficiente.</p>
+      <p>${nc} de ${n} pasos se verifican con la cámara: la app revisa que haya buena luz, que estés bien encuadrada o encuadrado y y que te muevas o te quedes quieta/o el tiempo necesario. La app detecta movimiento, no reconoce el cuerpo ni evalúa la técnica: es una ayuda para llevar el ritmo, no un examen médico.</p>
       <p class="disclaimer">Nada se graba ni se envía. Todo se procesa en tu teléfono.</p></div>
     ${can?`<button class="btn" id="start-cam">Empezar con cámara</button><button class="btn ghost" id="start-manual">Empezar sin cámara</button>`
          :`<div class="notice"><p>La guía con cámara para este autoexamen está disponible solo para personas de 18 años o más. Puedes hacerlo con la guía paso a paso.</p></div><button class="btn" id="start-manual">Empezar</button>`}`;
@@ -467,28 +470,54 @@ const DEMOS = {
   cheek:{title:"Separa la mejilla", how:["Con un dedo, jala la comisura de la boca hacia un lado.","Mira el interior de la mejilla.","Repite del otro lado."]},
   tongue:{title:"Saca la lengua", how:["Saca la lengua lo más que puedas.","Quédate quieta/o un momento.","Luego levántala para ver abajo y a los lados."]}
 };
-function demoSVG(kind, mirror){
+/* Figura de enseñanza: silueta con ropa interior, trazo médico esquemático */
+function figure(sex){
+  const SK = "#E2AE88", SKD = "#B67C57", UW = "#5B6B8C", HAIR = "#4A3326";
+  const torso = sex==="h"
+    ? "M38 50Q70 38 102 50Q108 68 98 88Q95 104 94 116L94 140L46 140L46 116Q45 104 42 88Q32 68 38 50Z"
+    : "M46 50Q70 41 94 50Q99 62 92 80Q85 94 90 110Q95 124 94 140L46 140Q45 124 50 110Q55 94 48 80Q41 62 46 50Z";
+  const briefs = sex==="h"
+    ? `<path d="M46 122H94L94 140Q82 158 70 150Q58 158 46 140Z" fill="${UW}"/>`
+    : `<path d="M47 124H93Q96 134 92 142Q80 156 70 148Q60 156 48 142Q44 134 47 124Z" fill="${UW}"/>`;
+  const legs = `<path d="M50 146L52 172M90 146L88 172" stroke="${SK}" stroke-width="12" stroke-linecap="round"/>`;
+  const chest = sex==="h"
+    ? `<path d="M50 70Q60 78 70 72Q80 78 90 70" stroke="${SKD}" stroke-width="1.6" fill="none" opacity=".7"/><path d="M70 74V112" stroke="${SKD}" stroke-width="1" opacity=".4"/>`
+    : `<path d="M49 76Q59 92 69 78M71 78Q81 92 91 76" stroke="${SKD}" stroke-width="1.8" fill="none"/>`;
+  const head = `<ellipse cx="70" cy="22" rx="12.5" ry="15" fill="${SK}" stroke="${SKD}" stroke-width="1.6"/><path d="M57 20Q58 6 70 6Q83 6 84 20Q78 12 70 12Q62 12 57 20Z" fill="${HAIR}"/><rect x="64" y="35" width="12" height="13" rx="4" fill="${SK}"/>`;
+  return `${legs}<path d="${torso}" fill="${SK}" stroke="${SKD}" stroke-width="1.6"/>${briefs}${chest}${head}`;
+}
+function limb(x1,y1,x2,y2,x3,y3){ // brazo en dos segmentos con contorno
+  const d = x3!==undefined ? `M${x1} ${y1}L${x2} ${y2}L${x3} ${y3}` : `M${x1} ${y1}L${x2} ${y2}`;
+  return `<path d="${d}" stroke="#B67C57" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="${d}" stroke="#E2AE88" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+}
+function demoSVG(kind, mirror, sex){
+  sex = sex || "m";
   const L = 'stroke="var(--tint-deep)" stroke-width="5" stroke-linecap="round" fill="none"';
   const A = 'fill="var(--accent)"';
   const an = (attr, vals, dur) => `<animate attributeName="${attr}" values="${vals}" dur="${dur}s" repeatCount="indefinite"/>`;
-  const body = `<circle cx="60" cy="26" r="14" ${L}/><path d="M60 40v6M40 52q20-10 40 0M44 52v56h32V52" ${L}/>`;
-  let g = "";
-  if (kind==="front") g = body+`<path d="M40 54L34 100M80 54L86 100" ${L}/>`+`<circle cx="60" cy="76" r="26" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 4">${an("r","26;29;26",2)}</circle>`;
-  else if (kind==="armsup") g = body+`<line x1="40" y1="54" x2="34" y2="100" ${L}>${an("x2","34;30;34",2.4)}${an("y2","100;8;100",2.4)}</line><line x1="80" y1="54" x2="86" y2="100" ${L}>${an("x2","86;90;86",2.4)}${an("y2","100;8;100",2.4)}</line>`;
-  else if (kind==="circles") g = body+`<path d="M40 54L34 100M80 54L92 36L68 22" ${L}/><circle cx="48" cy="78" r="5" ${A}>${an("cx","48;54;48;42;48",2)}${an("cy","72;78;84;78;72",2)}</circle><circle cx="48" cy="78" r="12" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".4"/>`;
-  else if (kind==="axilla") g = body+`<path d="M80 54L34 100M40 54L96 30" ${L}/><circle cx="76" cy="62" r="5" ${A}>${an("cy","56;74;56",1.6)}${an("cx","78;80;78",1.6)}</circle>`;
-  else if (kind==="turn") g = `<g transform="translate(60 0)"><g><animateTransform attributeName="transform" type="scale" values="1 1;0.2 1;1 1;0.2 1;1 1" dur="4s" repeatCount="indefinite"/><g transform="translate(-60 0)">${body}<path d="M40 54L34 100M80 54L86 100" ${L}/></g></g></g>`;
-  else if (kind==="arm") g = body+`<path d="M80 54L108 70" ${L}/><ellipse cx="114" cy="72" rx="6" ry="9" ${A}>${an("rx","6;2;6",2)}</ellipse><path d="M40 54L34 100" ${L}/>`;
-  else if (kind==="roll") g = `<ellipse cx="60" cy="76" rx="16" ry="22" fill="var(--tint)" stroke="var(--tint-deep)" stroke-width="4"/><circle cx="36" cy="66" r="6" ${A}>${an("cy","62;90;62",2)}</circle><circle cx="84" cy="90" r="6" ${A}>${an("cy","90;62;90",2)}</circle>`;
-  else if (kind==="neck") g = `<circle cx="60" cy="40" r="26" ${L}/><path d="M48 66v22M72 66v22M34 88q26 14 52 0" ${L}/><circle cx="46" cy="74" r="5" ${A}>${an("cx","46;60;74;60;46",3)}${an("cy","72;84;72;84;72",3)}</circle>`;
-  else if (kind==="mouth"||kind==="tongue") g = `<circle cx="60" cy="60" r="38" ${L}/><circle cx="46" cy="48" r="3" fill="var(--tint-deep)"/><circle cx="74" cy="48" r="3" fill="var(--tint-deep)"/><ellipse cx="60" cy="78" rx="14" ry="3" fill="var(--tint-deep)">${an("ry","3;11;3",2.4)}</ellipse>`+(kind==="tongue"?`<ellipse cx="60" cy="84" rx="8" ry="3" fill="#F08A9B">${an("cy","80;96;80",2.4)}${an("ry","3;10;3",2.4)}</ellipse>`:"");
-  else if (kind==="cheek") g = `<circle cx="60" cy="60" r="38" ${L}/><circle cx="46" cy="48" r="3" fill="var(--tint-deep)"/><circle cx="74" cy="48" r="3" fill="var(--tint-deep)"/><path d="M46 80q14 6 28 0" ${L}/><circle cx="76" cy="80" r="5" ${A}>${an("cx","76;96;76",2)}</circle>`;
-  return `<svg viewBox="0 0 130 120" role="img" aria-label="Ejemplo animado: ${DEMOS[kind].title}"><g ${mirror?'transform="translate(130 0) scale(-1 1)"':""}>${g}</g></svg>`;
+  const fig = figure(sex);
+  const hand = (x,y,anim="") => `<circle cx="${x}" cy="${y}" r="5.5" fill="#E2AE88" stroke="#B67C57" stroke-width="1.4">${anim}</circle>`;
+  let g = "", vb = "0 0 140 176";
+  if (kind==="front") g = fig+limb(40,54,34,92,32,124)+limb(100,54,106,92,108,124)+`<ellipse cx="70" cy="88" rx="44" ry="76" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 5" opacity=".7">${an("rx","44;47;44",2)}</ellipse>`;
+  else if (kind==="armsup"){
+    const up = (x1,y1,xa,ya,xb,yb,x2,y2,x3,y3)=>`<path stroke="#B67C57" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><animate attributeName="d" values="M${x1} ${y1}L${xa} ${ya}L${xb} ${yb};M${x1} ${y1}L${x2} ${y2}L${x3} ${y3};M${x1} ${y1}L${xa} ${ya}L${xb} ${yb}" dur="2.6s" repeatCount="indefinite"/></path><path stroke="#E2AE88" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"><animate attributeName="d" values="M${x1} ${y1}L${xa} ${ya}L${xb} ${yb};M${x1} ${y1}L${x2} ${y2}L${x3} ${y3};M${x1} ${y1}L${xa} ${ya}L${xb} ${yb}" dur="2.6s" repeatCount="indefinite"/></path>`;
+    g = fig+up(40,54,34,92,32,124,26,26,34,0)+up(100,54,106,92,108,124,114,26,106,0);
+  }
+  else if (kind==="circles") g = fig+limb(100,54,116,34,84,16)+limb(40,56,52,80,72,86)+hand(62,76,an("cx","62;68;62;56;62",2)+an("cy","72;78;84;78;72",2))+`<circle cx="62" cy="78" r="14" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".5"/>`;
+  else if (kind==="axilla") g = fig+limb(100,54,118,44,108,18)+limb(40,56,56,72,92,60)+hand(96,60,an("cy","50;74;50",1.8)+an("cx","98;100;98",1.8))+`<circle cx="98" cy="62" r="13" fill="none" stroke="var(--accent)" stroke-width="2" opacity=".5"/>`;
+  else if (kind==="turn") g = `<g transform="translate(70 0)"><g><animateTransform attributeName="transform" type="scale" values="1 1;0.22 1;1 1;0.22 1;1 1" dur="4.4s" repeatCount="indefinite"/><g transform="translate(-70 0)">${fig}${limb(40,54,34,92,32,124)}${limb(100,54,106,92,108,124)}</g></g></g>`;
+  else if (kind==="arm") g = fig+limb(100,54,118,70,128,56)+hand(128,50,an("r","5.5;2.5;5.5",2))+limb(40,54,34,92,32,124);
+  else if (kind==="roll") { vb="0 0 130 120"; g = `<ellipse cx="65" cy="60" rx="17" ry="23" fill="#E2AE88" stroke="#B67C57" stroke-width="2"/><path d="M65 38V82" stroke="#B67C57" stroke-width="1" opacity=".5"/><circle cx="38" cy="50" r="7" ${A}>${an("cy","44;78;44",2)}</circle><circle cx="92" cy="78" r="7" ${A}>${an("cy","78;44;78",2)}</circle>`; }
+  else if (kind==="neck") { vb="0 0 130 120"; g = `<ellipse cx="65" cy="40" rx="26" ry="32" fill="#E2AE88" stroke="#B67C57" stroke-width="2"/><rect x="52" y="68" width="26" height="30" rx="8" fill="#E2AE88" stroke="#B67C57" stroke-width="2"/><path d="M38 100Q65 90 92 100" stroke="#B67C57" stroke-width="2" fill="none"/><circle cx="50" cy="78" r="5.5" ${A}>${an("cx","50;65;80;65;50",3)}${an("cy","74;86;74;86;74",3)}</circle>`; }
+  else if (kind==="mouth"||kind==="tongue") { vb="0 0 130 120"; g = `<ellipse cx="65" cy="58" rx="40" ry="46" fill="#E2AE88" stroke="#B67C57" stroke-width="2"/><circle cx="50" cy="44" r="3" fill="#4A3326"/><circle cx="80" cy="44" r="3" fill="#4A3326"/><ellipse cx="65" cy="78" rx="15" ry="3" fill="#7A2E3A">${an("ry","3;12;3",2.4)}</ellipse>`+(kind==="tongue"?`<ellipse cx="65" cy="82" rx="9" ry="3" fill="#F08A9B">${an("cy","80;98;80",2.4)}${an("ry","3;11;3",2.4)}</ellipse>`:""); }
+  else if (kind==="cheek") { vb="0 0 130 120"; g = `<ellipse cx="65" cy="58" rx="40" ry="46" fill="#E2AE88" stroke="#B67C57" stroke-width="2"/><circle cx="50" cy="44" r="3" fill="#4A3326"/><circle cx="80" cy="44" r="3" fill="#4A3326"/><path d="M50 80Q65 88 80 80" stroke="#7A2E3A" stroke-width="3" fill="none"/><circle cx="82" cy="80" r="6" ${A}>${an("cx","82;102;82",2)}</circle>`; }
+  return `<svg viewBox="${vb}" role="img" aria-label="Ejemplo animado: ${DEMOS[kind].title}"><g ${mirror?`transform="translate(${vb.split(" ")[2]} 0) scale(-1 1)"`:""}>${g}</g></svg>`;
 }
+function demoSex(exam){ return exam==="testiculo" ? "h" : exam==="mama" ? "m" : (S.profile?.sex==="hombre" ? "h" : "m"); }
 function demoCard(exam, idx){
   const d = (DEMO_MAP[exam]||[])[idx]; if (!d) return "";
   const [kind, m] = d.split(":"), D = DEMOS[kind];
-  return `<div class="demo"><div class="demo-fig">${demoSVG(kind, m==="m")}</div><div class="stack"><strong>Cómo se hace: ${D.title}</strong><ol>${D.how.map(x=>`<li>${x}</li>`).join("")}</ol></div></div>`;
+  return `<div class="demo"><div class="demo-fig">${demoSVG(kind, m==="m", demoSex(exam))}</div><div class="stack"><strong>Cómo se hace: ${D.title}</strong><ol>${D.how.map(x=>`<li>${x}</li>`).join("")}</ol></div></div>`;
 }
 
 function step(){
@@ -502,7 +531,7 @@ function step(){
         <video id="vid" playsinline muted class="mirror" hidden></video>
         <canvas id="ov"></canvas>
         <div class="hud"><div class="say" id="say">${st.cam.say}</div>
-          <div class="chips"><span class="chip" id="c-light">Luz</span><span class="chip" id="c-cond">${st.cam.need==="still"?"Posición quieta":"Movimiento en la zona"}</span><span class="chip" id="c-time">0 / ${st.cam.secs} s</span></div></div>
+          <div class="chips"><span class="chip" id="c-light">Luz</span><span class="chip" id="c-cond">${st.cam.need==="still"?"Posición quieta":"Movimiento en la zona"}</span>${st.cam.reps?`<span class="reps" id="reps"></span>`:`<span class="chip" id="c-time">0 / ${st.cam.secs} s</span>`}</div></div>
         <div class="camtools"><button id="flip">Cambiar cámara</button></div>
       </div>
       <div id="camfail" hidden></div>`:""}
@@ -614,7 +643,7 @@ function measure(cam){
   if (CAM.demo){
     const t = (performance.now()-CAM.t0)/1000;
     const ready = t > 1.2;
-    return {bright:135, whole: cam.need==="still" ? (ready?1.5:9) : 4, zone: cam.need==="motion" ? (ready?14+4*Math.sin(t*6):1) : 1};
+    return {bright:135, whole: cam.need==="still" ? (ready?1.5:9) : (ready?8:1), zone: 1};
   }
   const v = document.getElementById("vid");
   if (!v || v.readyState < 2) return null;
@@ -679,6 +708,7 @@ function drawOverlay(cam, m, pct){
   c.lineWidth = 5*dpr; c.strokeStyle = "rgba(242,247,245,.25)";
   c.beginPath(); c.arc(cx, cy, rad, 0, Math.PI*2); c.stroke();
   c.strokeStyle = color; c.beginPath(); c.arc(cx, cy, rad, -Math.PI/2, -Math.PI/2 + Math.PI*2*Math.min(pct,1)); c.stroke();
+  if (pct>=1){ c.lineWidth = 5*dpr; c.lineCap="round"; c.beginPath(); c.moveTo(cx-9*dpr, cy); c.lineTo(cx-2*dpr, cy+8*dpr); c.lineTo(cx+10*dpr, cy-8*dpr); c.stroke(); c.lineCap="butt"; }
 }
 function setChip(id, state, text){ const el = document.getElementById(id); if (!el) return; el.className = "chip" + (state===true?" ok":state===false?" bad":""); if (text) el.textContent = text; }
 function loop(){
@@ -688,15 +718,19 @@ function loop(){
   const cam = st.cam, m = measure(cam);
   if (m){
     const light = m.bright > 55;
-    const cond = cam.need==="still" ? (m.whole < 4.5) : (m.zone > 7 && m.zone > m.whole*1.3);
-    setChip("c-light", light, light ? "Luz suficiente" : "Falta luz");
-    setChip("c-cond", cond, cam.need==="still" ? (cond?"Posición estable":"Hay movimiento: quédate quieta/o") : (cond?"Movimiento detectado":"Sin movimiento en el recuadro"));
+    const cond = cam.need==="still" ? (m.whole < 4.5) : (m.whole > 3);
+    setChip("c-light", light, light ? "☀ ✓" : "☀ Falta luz");
+    setChip("c-cond", cond, cam.need==="still" ? (cond?"✓ Quieta/o":"Quédate quieta/o") : (cond?"✓ Bien":"Muévete"));
     if (light && cond && !S.verified.has(S.step)) CAM.acc += dt;
     const say = document.getElementById("say");
-    if (say && !S.verified.has(S.step)) say.textContent = !light ? "Busca un lugar con más luz" : cond ? "Muy bien, sigue así" : cam.say;
+    const per = cam.reps ? cam.secs/cam.reps : cam.secs, rdone = cam.reps ? Math.min(Math.floor(CAM.acc/per), cam.reps) : 0;
+    if (say && !S.verified.has(S.step)) say.textContent = !light ? "Busca más luz" : cond ? "✓ Muy bien" : (cam.reps ? `Pasada ${rdone+1} de ${cam.reps}: presión ${cam.repLabels[rdone].toLowerCase()}` : cam.say);
   }
   const pct = CAM.acc / cam.secs;
-  setChip("c-time", pct>=1 || null, `${Math.min(Math.floor(CAM.acc), cam.secs)} / ${cam.secs} s`);
+  if (cam.reps){
+    const rd = Math.min(Math.floor(CAM.acc/(cam.secs/cam.reps)), cam.reps), box = document.getElementById("reps");
+    if (box) box.innerHTML = cam.repLabels.map((l,i)=>`<span class="rep ${i<rd?"ok":i===rd?"cur":""}">${i<rd?"✓":i+1} ${l}</span>`).join("");
+  } else setChip("c-time", pct>=1 || null, `${Math.min(Math.floor(CAM.acc), cam.secs)} / ${cam.secs} s`);
   drawOverlay(cam, m || {}, pct);
   if (pct >= 1 && !S.verified.has(S.step)){
     S.verified.add(S.step);
