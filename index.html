@@ -153,6 +153,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .reps{display:flex;gap:6px;flex-wrap:wrap}
 .rep{background:rgba(255,255,255,.85);color:#4A4A58;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
 .rep.cur{background:#fff;color:#121216;outline:2px solid var(--accent)}.rep.ok{background:#DDF3EA;color:#1F8C64}
+.phgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px}
+.phgrid:empty{display:none}
+.phthumb{position:relative;border:0;padding:0;border-radius:14px;overflow:hidden;aspect-ratio:1;background:var(--tint-2)}
+.phthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.phx{position:absolute;top:4px;right:4px;border:0;border-radius:999px;width:24px;height:24px;background:rgba(0,0,0,.6);color:#fff;font-size:.75rem}
+.tips{margin:6px 0 0;padding-left:18px;font-size:.9rem;display:flex;flex-direction:column;gap:4px}
+label.btn{display:flex;justify-content:center;align-items:center;cursor:pointer}
+.phview{position:fixed;inset:0;background:rgba(10,10,16,.72);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:12px}
+.phview-in{background:var(--surface);color:var(--ink);border-radius:24px;padding:16px;width:100%;max-width:520px;max-height:92vh;overflow:auto}
+.phview figure{margin:0}.phview img{width:100%;border-radius:16px;display:block}
+.phview figcaption{font-size:.82rem;color:var(--muted);margin-top:4px}
+.phcompare{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .verified{display:flex;gap:10px;align-items:center;font-weight:700;color:var(--ok)}
 .notice{background:var(--alert-soft);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
 
@@ -339,7 +351,7 @@ function profile(){
     <h1>Aprende a revisarte bien, con la cámara como guía.</h1>
     <div class="card stack">
       <p>La app <strong>no diagnostica</strong>. Te guía para hacer cada paso correctamente y te dice cuándo consultar.</p>
-      <p>La cámara se usa solo para comprobar tu posición y tus movimientos. <strong>Las imágenes se procesan en tu teléfono y no se guardan ni se envían.</strong></p>
+      <p>La cámara se usa solo para comprobar tu posición y tus movimientos. <strong>Las imágenes de la guía se procesan en tu teléfono y no se guardan ni se envían.</strong> Solo si tú decides tomar una foto de seguimiento, se guarda dentro de la app.</p>
     </div>
     ${profileForm(draft)}
     <button class="btn" id="pf-save">Guardar y empezar</button></div>`;
@@ -543,12 +555,95 @@ function step(){
     ${useCam?`<button class="linkbtn" id="skip">No puedo hacer este paso con la cámara</button>`:`${S.camMode?`<p class="disclaimer">Este paso no se verifica con la cámara. Hazlo con calma y continúa.</p>`:""}`}`;
 }
 
+/* ---------- Fotos de seguimiento: solo en este dispositivo (IndexedDB) ---------- */
+const PHOTO_EXAMS = ["piel","boca"];
+const PH = {db:null, pending:[]};
+function phDB(){
+  if (PH.db) return Promise.resolve(PH.db);
+  return new Promise((ok, ko) => {
+    try{
+      const r = indexedDB.open("revisate", 1);
+      r.onupgradeneeded = () => { const s = r.result.createObjectStore("photos", {keyPath:"id"}); s.createIndex("rec", "recordId"); s.createIndex("exam", "exam"); };
+      r.onsuccess = () => { PH.db = r.result; ok(PH.db); };
+      r.onerror = () => ko(r.error);
+    }catch(e){ ko(e); }
+  });
+}
+async function phTx(mode, fn){ const db = await phDB(); return new Promise((ok, ko) => { const t = db.transaction("photos", mode), s = t.objectStore("photos"); const out = fn(s); t.oncomplete = () => ok(out && out.result !== undefined ? out.result : out); t.onerror = () => ko(t.error); }); }
+const phPut = p => phTx("readwrite", s => { s.put(p); });
+const phDel = id => phTx("readwrite", s => { s.delete(id); });
+const phAll = () => phTx("readonly", s => s.getAll());
+const phClear = () => phTx("readwrite", s => { s.clear(); });
+async function phShrink(file){
+  // Reduce la foto a 1600 px como máximo para no llenar el teléfono
+  const bmp = await createImageBitmap(file);
+  const k = Math.min(1, 1600/Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas"); c.width = Math.round(bmp.width*k); c.height = Math.round(bmp.height*k);
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+  return new Promise(r => c.toBlob(r, "image/jpeg", .85));
+}
+function photoBlock(){
+  if (!PHOTO_EXAMS.includes(S.exam)) return `<div class="card stack"><h3>¿Y las fotos?</h3><p class="disclaimer">En este examen no guardamos fotos: un bulto no se ve en una imagen y son zonas íntimas. Describe lo que notaste en la nota (lado, tamaño aproximado, si duele) y muéstraselo a tu médico.</p></div>`;
+  return `<div class="card stack"><h3>Foto de seguimiento (opcional)</h3>
+    <p class="disclaimer">Útil si notaste algo raro: te ayuda a ver si cambia y a mostrárselo a tu médico. <strong>Se guarda solo dentro de esta app, en tu teléfono.</strong> No va a tu galería ni se envía.</p>
+    <details class="more" style="margin-left:0"><summary>Cómo tomar una buena foto</summary><ol class="tips">
+      <li>Usa la cámara trasera y luz natural, sin flash.</li><li>Acércate a unos 10–15 cm y enfoca solo la zona.</li>
+      <li>Pon una moneda al lado para tener referencia del tamaño.</li><li>La próxima vez, repite la misma distancia y luz para comparar.</li>
+      <li>No fotografíes zonas íntimas.</li></ol></details>
+    <div class="field"><label for="ph-zone">¿Dónde está?</label><input id="ph-zone" type="text" placeholder="Ej.: lunar en el hombro derecho" value="${esc(PH.zone||"")}"></div>
+    <div class="phgrid" id="ph-grid">${PH.pending.map((p,i)=>`<div class="phthumb"><img src="${p.url}" alt="Foto ${i+1}"><button class="phx" data-phx="${i}" aria-label="Quitar foto">✕</button></div>`).join("")}</div>
+    <label class="btn ghost" for="ph-in">📷 ${PH.pending.length?"Tomar otra foto":"Tomar foto"}</label>
+    <input id="ph-in" type="file" accept="image/*" capture="environment" hidden></div>`;
+}
+async function savePending(recordId){
+  if (!PH.pending.length) return 0;
+  try{ if (navigator.storage?.persist) await navigator.storage.persist(); }catch(e){}
+  let n = 0;
+  for (const p of PH.pending){ try{ await phPut({id:p.id, recordId, exam:S.exam, date:iso(today), zone:(PH.zone||"").trim(), blob:p.blob}); n++; }catch(e){} URL.revokeObjectURL(p.url); }
+  PH.pending = []; PH.zone = "";
+  return n;
+}
+async function fillHistoryPhotos(){
+  const boxes = document.querySelectorAll("[data-phrec]"); if (!boxes.length) return;
+  let all = []; try{ all = await phAll(); }catch(e){ return; }
+  PH.all = all.sort((a,b)=>a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+  boxes.forEach(b => {
+    const mine = PH.all.filter(p=>p.recordId===b.dataset.phrec);
+    b.innerHTML = mine.map(p=>`<button class="phthumb" data-phopen="${p.id}"><img src="${URL.createObjectURL(p.blob)}" alt="Foto ${esc(p.zone||"")}"></button>`).join("");
+    b.querySelectorAll("[data-phopen]").forEach(x => x.onclick = () => openPhoto(x.dataset.phopen));
+  });
+}
+function openPhoto(id){
+  const p = PH.all.find(x=>x.id===id); if (!p) return;
+  const prev = [...PH.all].reverse().find(x => x.exam===p.exam && x.date < p.date && (!p.zone || !x.zone || x.zone.toLowerCase()===p.zone.toLowerCase()));
+  const u = URL.createObjectURL(p.blob), pu = prev ? URL.createObjectURL(prev.blob) : null;
+  const d = document.createElement("div"); d.className = "phview"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","Foto de seguimiento");
+  d.innerHTML = `<div class="phview-in stack">
+    <div class="row" style="justify-content:space-between;align-items:center"><strong>${esc(p.zone||EXAMS[p.exam].name)}</strong><button class="small-btn" id="phv-close">Cerrar</button></div>
+    ${pu?`<div class="phcompare"><figure><img src="${pu}" alt="Antes"><figcaption>Antes · ${fmt(prev.date)}</figcaption></figure><figure><img src="${u}" alt="Ahora"><figcaption>Ahora · ${fmt(p.date)}</figcaption></figure></div>`
+       :`<figure><img src="${u}" alt="Foto"><figcaption>${fmt(p.date)}</figcaption></figure><p class="disclaimer">Cuando tomes otra foto de esta zona, aquí verás las dos juntas para comparar.</p>`}
+    <div class="row"><button class="btn" id="phv-share">Mostrar o enviar a mi médico</button></div>
+    <button class="linkbtn" id="phv-del">Borrar esta foto</button></div>`;
+  document.body.appendChild(d);
+  const close = () => { URL.revokeObjectURL(u); if (pu) URL.revokeObjectURL(pu); d.remove(); };
+  d.querySelector("#phv-close").onclick = close;
+  d.onclick = e => { if (e.target===d) close(); };
+  d.querySelector("#phv-share").onclick = async () => {
+    const f = new File([p.blob], `revisate-${p.date}.jpg`, {type:"image/jpeg"});
+    try{ if (navigator.canShare?.({files:[f]})){ await navigator.share({files:[f], title:"Foto de seguimiento"}); return; } }catch(e){ return; }
+    const a = document.createElement("a"); a.href = u; a.download = f.name; a.click();
+  };
+  const del = d.querySelector("#phv-del");
+  del.onclick = async () => { if (!del.dataset.c){ del.dataset.c = 1; del.textContent = "Toca de nuevo para borrar"; return; } await phDel(p.id); close(); render(); };
+}
+
 function check(){
   const e = EXAMS[S.exam];
   return `<button class="back" id="back-step">← Volver a los pasos</button>
     <div class="stack"><span class="eyebrow">${e.name} · último paso</span><h1>¿Notaste algo de esto?</h1><p class="muted">Marca solo lo que sea nuevo o distinto al mes pasado.</p></div>
     <div class="stack">${e.signs.map((s,i)=>`<div class="check"><input type="checkbox" id="sg-${i}" ${S.checked.has(i)?"checked":""}><label for="sg-${i}">${s}</label></div>${EXD[S.exam]?.[i]?`<details class="more"><summary>Ver ejemplo</summary>${exPair(S.exam,i)}</details>`:""}`).join("")}</div>
     <div class="field"><label for="note">Nota para ti (opcional)</label><textarea id="note" rows="3" placeholder="Por ejemplo: lunar en la espalda, lado izquierdo">${esc(S.note)}</textarea></div>
+    ${photoBlock()}
     <button class="btn" id="finish">Guardar resultado</button>`;
 }
 
@@ -584,7 +679,8 @@ function history(){
         ${r.example?`<span class="pill ex">Ejemplo</span>`:""}</div>
         <p class="disclaimer">${r.verified} de ${r.total} pasos verificados con cámara</p>
         ${r.signs.length?`<p class="muted">${r.signs.map(i=>EXAMS[r.exam].signs[i]).join(" · ")}</p>`:""}
-        ${r.note?`<p>${esc(r.note)}</p>`:""}</div></div>`).join("")}</div>`
+        ${r.note?`<p>${esc(r.note)}</p>`:""}
+        ${r.photos?`<div class="phgrid" data-phrec="${r.id}"></div>`:""}</div></div>`).join("")}</div>`
     : `<div class="card"><p>Aún no tienes registros. Haz tu primer autoexamen desde Inicio.</p></div>`}
     ${recs.some(r=>r.example)?`<button class="btn ghost" id="clear-ex">Quitar ejemplos</button>`:""}`;
 }
@@ -594,8 +690,8 @@ function info(){
   return `<div class="stack"><span class="eyebrow">Perfil</span><h1>Tus autoexámenes</h1></div>
     ${profileForm(draft)}
     <button class="btn" id="pf-save">Guardar cambios</button><p id="pf-msg" class="disclaimer" hidden></p>
-    <div class="card stack"><h3>Privacidad</h3><p>La cámara se procesa en tu teléfono, cuadro por cuadro, y nunca se graba ni se envía. Tus registros se guardan solo en este navegador.</p>
-      <button class="btn ghost" id="wipe">Borrar todos mis registros</button><p id="wipe-msg" class="disclaimer" hidden></p></div>
+    <div class="card stack"><h3>Privacidad</h3><p>La guía con cámara se procesa en tu teléfono, cuadro por cuadro, y nunca se graba ni se envía. Las fotos de seguimiento solo se guardan si tú las tomas, y quedan dentro de esta app en tu teléfono: no van a tu galería ni a internet. Tus registros se guardan solo en este navegador. Si borras los datos del navegador, también se borran.</p>
+      <button class="btn ghost" id="wipe">Borrar todos mis registros y fotos</button><p id="wipe-msg" class="disclaimer" hidden></p></div>
     <div class="card stack"><h3>Sobre esta app</h3><p>Prototipo educativo. No diagnostica ni reemplaza la evaluación médica ni los tamizajes indicados para tu edad.</p>
       <p class="disclaimer">Contenido basado en guías del INEN, NHS, Academia Americana de Dermatología, AAOMS, ADHA y Breastcancer.org.</p></div>`;
 }
@@ -770,17 +866,26 @@ function bind(){
   on("back-step", () => { S.step = EXAMS[S.exam].steps.length-1; go("step"); });
   document.querySelectorAll(".check input").forEach(cb => cb.onchange = () => { const i = Number(cb.id.slice(3)); cb.checked ? S.checked.add(i) : S.checked.delete(i); });
   const note = $("note"); if (note) note.oninput = () => S.note = note.value;
+  const zone = $("ph-zone"); if (zone) zone.oninput = () => PH.zone = zone.value;
+  const phin = $("ph-in"); if (phin) phin.onchange = async () => {
+    const f = phin.files?.[0]; if (!f) return;
+    try{ const blob = await phShrink(f); PH.pending.push({id:String(Date.now())+Math.random().toString(36).slice(2,6), blob, url:URL.createObjectURL(blob)}); }catch(e){}
+    render();
+  };
+  document.querySelectorAll("[data-phx]").forEach(b => b.onclick = () => { const [x] = PH.pending.splice(Number(b.dataset.phx),1); if (x) URL.revokeObjectURL(x.url); render(); });
+  fillHistoryPhotos();
   on("finish", () => {
     const camSteps = EXAMS[S.exam].steps.filter(s=>s.cam).length;
-    S.records.push({id:String(Date.now()), exam:S.exam, date:iso(today), signs:[...S.checked].sort(), note:S.note.trim(), verified:S.camMode?S.verified.size:0, total:camSteps});
-    persist(); go("result");
+    const id = String(Date.now());
+    S.records.push({id, exam:S.exam, date:iso(today), signs:[...S.checked].sort(), note:S.note.trim(), verified:S.camMode?S.verified.size:0, total:camSteps, photos:PH.pending.length});
+    persist(); savePending(id).finally(() => go("result"));
   });
   on("copy", async () => { const b = $("copy"); try{ await navigator.clipboard.writeText("113"); b.textContent = "Copiado"; }catch(e){ const r = document.createRange(); r.selectNodeContents($("phone")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Selecciónalo y copia"; } });
   on("twoweeks", () => { const d = new Date(today); d.setDate(d.getDate()+14); S.followups.push({id:String(Date.now()), date:iso(d), done:false}); persist(); const b = $("twoweeks"); b.textContent = `Listo: te avisamos el ${fmt(iso(d))}`; b.disabled = true; });
   on("clear-ex", () => { S.records = S.records.filter(r=>!r.example); persist(); render(); });
   on("wipe", () => {
     const b = $("wipe"), m = $("wipe-msg");
-    if (b.dataset.confirm){ S.records = []; S.followups = []; persist(); m.hidden = false; m.textContent = "Registros borrados."; b.textContent = "Borrar todos mis registros"; delete b.dataset.confirm; }
+    if (b.dataset.confirm){ S.records = []; S.followups = []; persist(); phClear().catch(()=>{}); m.hidden = false; m.textContent = "Registros y fotos borrados."; b.textContent = "Borrar todos mis registros y fotos"; delete b.dataset.confirm; }
     else { b.dataset.confirm = "1"; b.textContent = "Toca de nuevo para confirmar"; }
   });
 }
