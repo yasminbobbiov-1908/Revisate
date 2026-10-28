@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Revísate guía tu autoexamen mensual de mama, piel, testículos y boca, con la cámara como apoyo. No diagnostica; te dice cuándo consultar.">
-<meta name="theme-color" content="#F4F4F8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0E0E14" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -15,181 +15,212 @@
 <title>Revísate</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&display=swap">
 <style>
-/* Layout: app móvil de una columna (máx. 440px); tarjetas pastel de 24px de radio con degradado suave, cifras grandes, barra flotante en píldora */
+/* Revísate · estilo "Editorial greeting" (tasteskill, semilla 1142687245).
+   App móvil de una columna (máx. 480px, márgenes 16px). Una sola fuente de texto (Instrument Sans);
+   Instrument Serif solo para el saludo de Inicio. Paneles planos un paso de tono sobre el blanco, sin sombras
+   ni degradados. Color: tinta casi negra en la acción principal; el verde azulado solo en datos (progreso,
+   pasos verificados); un tinte pálido por autoexamen como identidad. Radios: 22px paneles, píldora en controles. */
 :root{
-  --bg:#F4F4F8; --surface:#FFFFFF; --ink:#121216; --muted:#6F6F7E; --line:#E9E9F0;
-  --accent:#6A4DF4; --on-accent:#FFFFFF; --nav:#121216; --on-nav:#FFFFFF;
-  --lav:#ECE8FF; --lav-2:#F8F6FF; --lav-deep:#6A4DF4;
-  --pink:#FFE1E8; --pink-2:#FFF5F7; --pink-deep:#E0435F;
-  --mint:#DDF3EA; --mint-2:#F3FBF8; --mint-deep:#1F8C64;
-  --sky:#E1EAFF; --sky-2:#F4F7FF; --sky-deep:#3A66DB;
-  --ok:#1F8C64; --ok-soft:#DDF3EA; --alert:#D63A57; --alert-soft:#FFE1E8;
-  --shadow:0 1px 2px rgba(20,20,50,.04), 0 10px 28px rgba(20,20,50,.07);
-  --cam:#0B0B12;
-  --tint:var(--lav); --tint-2:var(--lav-2); --tint-deep:var(--lav-deep);
-  --font:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --ground:#ffffff; --surface:#f6f5f2; --raised:#ffffff; --active:#ecebe7;
+  --border:#e7e6e1; --rule:#efeee9; --control:#d9d9d6;
+  --text:#1f201d; --muted:#5e5e5b; --faint:#6b6b68;
+  --primary:#1f201d; --on-primary:#ffffff;
+  --accent:#1b6e66;
+  --positive:#2e7d32; --negative:#b42318;
+  --pill-positive-bg:#dcfae5; --pill-positive-ink:#04250e;
+  --pill-negative-bg:#fdecea; --pill-negative-ink:#7a1d14;
+  --pill-warning-bg:#fffbeb; --pill-warning-ink:#92400e;
+  --cam:#121311;
+  /* identidad de cada autoexamen: un tinte pálido y su tono profundo para los dibujos */
+  --mama:#f8eaea; --mama-2:#fcf4f4; --mama-deep:#9b3b4a;
+  --piel:#f2ede4; --piel-2:#f9f6f1; --piel-deep:#7a5636;
+  --testiculo:#e8eef4; --testiculo-2:#f4f7fa; --testiculo-deep:#345b86;
+  --boca:#e6f1eb; --boca-2:#f3f8f5; --boca-deep:#2f6b55;
+  --tint:var(--surface); --tint-2:var(--raised); --tint-deep:var(--accent);
+  --radius-card:22px; --radius-inner:14px;
+  --font:"Instrument Sans", Inter, system-ui, sans-serif;
+  --serif:"Instrument Serif", Georgia, serif;
+  --check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0E0E14; --surface:#18181F; --ink:#F2F2F7; --muted:#A3A3B5; --line:#2A2A35;
-  --accent:#A08CFF; --on-accent:#0E0E14; --nav:#F2F2F7; --on-nav:#0E0E14;
-  --lav:#28224A; --lav-2:#1C1A2C; --lav-deep:#B6A8FF;
-  --pink:#41212B; --pink-2:#25171C; --pink-deep:#FF859C;
-  --mint:#173A2F; --mint-2:#14231E; --mint-deep:#62D6A8;
-  --sky:#1C2848; --sky-2:#161C2E; --sky-deep:#8FB0FF;
-  --ok:#62D6A8; --ok-soft:#173A2F; --alert:#FF859C; --alert-soft:#41212B;
-  --shadow:0 0 0 1px rgba(255,255,255,.05); --cam:#050508; color-scheme:dark}}
+  --ground:#111111; --surface:#1c1c1b; --raised:#262625; --active:#2b2b2a;
+  --border:#2e2e2d; --rule:#262625; --control:#444443;
+  --text:#f4f4f2; --muted:#b4b4b0; --faint:#9a9a96;
+  --primary:#f4f4f2; --on-primary:#111111; --accent:#5cc2b6;
+  --positive:#3fc07a; --negative:#e5566f;
+  --pill-positive-bg:#172a1d; --pill-positive-ink:#3fc07a; --pill-negative-bg:#2c1a20; --pill-negative-ink:#f08094;
+  --pill-warning-bg:#2a2214; --pill-warning-ink:#f0b46a;
+  --mama:#2c2022; --mama-2:#221b1c; --mama-deep:#f0a3b0;
+  --piel:#29241e; --piel-2:#211e1a; --piel-deep:#e0b98f;
+  --testiculo:#1e252d; --testiculo-2:#1a1f24; --testiculo-deep:#9cc0e6;
+  --boca:#1c2924; --boca-2:#18211d; --boca-deep:#8fd1b6;
+  --cam:#000000; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0E0E14; --surface:#18181F; --ink:#F2F2F7; --muted:#A3A3B5; --line:#2A2A35;
-  --accent:#A08CFF; --on-accent:#0E0E14; --nav:#F2F2F7; --on-nav:#0E0E14;
-  --lav:#28224A; --lav-2:#1C1A2C; --lav-deep:#B6A8FF;
-  --pink:#41212B; --pink-2:#25171C; --pink-deep:#FF859C;
-  --mint:#173A2F; --mint-2:#14231E; --mint-deep:#62D6A8;
-  --sky:#1C2848; --sky-2:#161C2E; --sky-deep:#8FB0FF;
-  --ok:#62D6A8; --ok-soft:#173A2F; --alert:#FF859C; --alert-soft:#41212B;
-  --shadow:0 0 0 1px rgba(255,255,255,.05); --cam:#050508; color-scheme:dark}
-.t-mama{--tint:var(--pink); --tint-2:var(--pink-2); --tint-deep:var(--pink-deep)}
-.t-piel{--tint:var(--lav); --tint-2:var(--lav-2); --tint-deep:var(--lav-deep)}
-.t-testiculo{--tint:var(--sky); --tint-2:var(--sky-2); --tint-deep:var(--sky-deep)}
-.t-boca{--tint:var(--mint); --tint-2:var(--mint-2); --tint-deep:var(--mint-deep)}
+  --ground:#111111; --surface:#1c1c1b; --raised:#262625; --active:#2b2b2a;
+  --border:#2e2e2d; --rule:#262625; --control:#444443;
+  --text:#f4f4f2; --muted:#b4b4b0; --faint:#9a9a96;
+  --primary:#f4f4f2; --on-primary:#111111; --accent:#5cc2b6;
+  --positive:#3fc07a; --negative:#e5566f;
+  --pill-positive-bg:#172a1d; --pill-positive-ink:#3fc07a; --pill-negative-bg:#2c1a20; --pill-negative-ink:#f08094;
+  --pill-warning-bg:#2a2214; --pill-warning-ink:#f0b46a;
+  --mama:#2c2022; --mama-2:#221b1c; --mama-deep:#f0a3b0;
+  --piel:#29241e; --piel-2:#211e1a; --piel-deep:#e0b98f;
+  --testiculo:#1e252d; --testiculo-2:#1a1f24; --testiculo-deep:#9cc0e6;
+  --boca:#1c2924; --boca-2:#18211d; --boca-deep:#8fd1b6;
+  --cam:#000000; color-scheme:dark}
+.t-mama{--tint:var(--mama); --tint-2:var(--mama-2); --tint-deep:var(--mama-deep)}
+.t-piel{--tint:var(--piel); --tint-2:var(--piel-2); --tint-deep:var(--piel-deep)}
+.t-testiculo{--tint:var(--testiculo); --tint-2:var(--testiculo-2); --tint-deep:var(--testiculo-deep)}
+.t-boca{--tint:var(--boca); --tint-2:var(--boca-2); --tint-deep:var(--boca-deep)}
 
-html,body{height:100%}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5}
-.app{max-width:440px;margin:0 auto;padding-inline:16px;padding-block:18px 124px;display:flex;flex-direction:column;gap:18px}
-h1,h2,h3{margin:0;text-wrap:balance;line-height:1.12;letter-spacing:-.02em}
-h1{font-size:2rem;font-weight:800}
-h2{font-size:1.3rem;font-weight:800}
-h3{font-size:1.02rem;font-weight:700;letter-spacing:-.01em}
+html,body{min-height:100%}
+body{background:var(--ground);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.app{max-width:480px;margin:0 auto;padding:12px 16px 112px;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:0}
+h1{font-size:26px;line-height:1.2;font-weight:600;letter-spacing:-.01em}
+h2{font-size:20px;line-height:1.3;font-weight:600}
+h3{font-size:16px;line-height:1.35;font-weight:600}
 p{margin:0}
+.greet{font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.15;letter-spacing:-.01em}
+.lead{color:var(--muted);font-size:16px}
 .muted{color:var(--muted)}
-.eyebrow{font-size:.78rem;color:var(--muted);font-weight:600}
+.meta{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
 .stack{display:flex;flex-direction:column;gap:12px}
-.card{background:var(--surface);border-radius:24px;padding:18px;box-shadow:var(--shadow)}
-.tinted{background:linear-gradient(155deg,var(--tint) 0%,var(--tint-2) 100%)}
+.card{background:var(--surface);border-radius:var(--radius-card);padding:20px}
+.tinted{background:var(--tint)}
 button{font:inherit;color:inherit;cursor:pointer}
-button:disabled{opacity:.45;cursor:default}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.btn{border:0;border-radius:999px;padding:14px 20px;font-weight:700;background:var(--accent);color:var(--on-accent);width:100%}
-.btn.ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
-.btn.white{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);width:auto;padding:10px 18px;font-size:.9rem;align-self:flex-start}
+button:disabled{opacity:.4;cursor:default}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+
+/* Botones: píldora plana. Principal en tinta; secundario en gris. */
+.btn{border:0;border-radius:999px;min-height:48px;padding:12px 20px;font-weight:600;font-size:16px;background:var(--primary);color:var(--on-primary);width:100%;transition:transform .12s ease, background-color .15s ease}
+.btn:active:not(:disabled){transform:scale(.98)}
+.btn.ghost{background:var(--active);color:var(--text)}
+.btn.white{background:var(--primary);color:var(--on-primary);width:auto;align-self:flex-start;min-height:44px}
+@media (hover:hover){.btn:hover:not(:disabled){background:#000}.btn.ghost:hover:not(:disabled){background:var(--control)}:root[data-theme="dark"] .btn:hover:not(:disabled){background:#fff}}
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .row > .btn{flex:1 1 140px}
-.back{background:var(--surface);border:0;border-radius:999px;box-shadow:var(--shadow);padding:9px 16px;font-weight:700;align-self:flex-start}
-.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px 0;font-size:.9rem;align-self:center}
-.iconbtn{width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;flex:none}
-.iconbtn svg,.tabbar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.back{background:none;border:0;padding:10px 0;min-height:44px;font-weight:600;align-self:flex-start;color:var(--text)}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:10px 0;font-size:14px;align-self:center}
+.iconbtn{width:44px;height:44px;border-radius:50%;background:var(--surface);border:0;display:grid;place-items:center;flex:none}
+.iconbtn svg,.tabbar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.who{display:flex;gap:10px;align-items:center;min-width:0}
-.who .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(155deg,var(--lav),var(--pink));display:grid;place-items:center;font-weight:800;color:var(--lav-deep)}
-.who small{display:block;color:var(--muted);font-size:.75rem}
-.who strong{font-size:.95rem}
-.headline{font-size:2.15rem;line-height:1.08}
-.headline .pulse{display:inline-block;width:92px;height:26px;vertical-align:middle;margin-left:6px}
-.pulse path{fill:none;stroke:var(--pink-deep);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-.hero{border-radius:24px;padding:18px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;box-shadow:var(--shadow)}
-.hero .stack{gap:8px}
-.big{display:flex;flex-direction:column;align-items:flex-end;line-height:1}
-.big .num{font-size:3.6rem;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:var(--ink)}
-.big .unit{font-size:.85rem;font-weight:700;color:var(--muted)}
-.glyph{width:40px;height:40px;border-radius:14px;background:var(--surface);color:var(--tint-deep);display:grid;place-items:center;font-weight:800;box-shadow:var(--shadow);flex:none}
-
-.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--line);border-radius:999px;padding:4px}
-.seg button{background:transparent;border:0;border-radius:999px;padding:10px 6px;font-weight:700;color:var(--muted)}
-.seg button[aria-pressed="true"]{background:var(--nav);color:var(--on-nav)}
-.opt,.check{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1.5px solid transparent;border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)}
-.opt input,.check input{width:22px;height:22px;flex:none;margin-top:1px}
-.opt input{accent-color:var(--accent)}
-.check input{accent-color:var(--alert)}
-.opt label,.check label{cursor:pointer}
-.opt:has(input:checked){border-color:var(--accent)}
-.check:has(input:checked){border-color:var(--alert);background:var(--alert-soft)}
-
-.section-head{display:flex;justify-content:space-between;align-items:baseline}
+/* Inicio */
+.top{display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.brand{font-weight:600;font-size:16px}
+.next{border-radius:var(--radius-card);padding:20px;display:grid;grid-template-columns:1fr auto;gap:16px 12px;align-items:end;background:var(--tint)}
+.next .fig{text-align:right;line-height:1}
+.next .fig b{display:block;font-weight:400;font-size:40px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.next .fig span{font-size:13px;color:var(--muted)}
+.next .btn{grid-column:1 / -1}
+.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .exam-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.exam{border:0;border-radius:24px;padding:16px;text-align:left;display:flex;flex-direction:column;gap:8px;min-height:156px;background:linear-gradient(155deg,var(--tint) 0%,var(--tint-2) 100%);box-shadow:var(--shadow)}
-.exam .when{font-size:.8rem;color:var(--muted);margin-top:auto}
+.exam{border:0;border-radius:var(--radius-card);padding:16px;text-align:left;display:flex;flex-direction:column;gap:4px;min-height:136px;background:var(--tint);transition:transform .12s ease}
+.exam:active{transform:scale(.98)}
+.exam .val{font-size:28px;font-weight:400;line-height:1.1;letter-spacing:-.01em;font-variant-numeric:tabular-nums;margin-top:auto}
+.exam .val small{font-size:14px;color:var(--muted);margin-left:4px;letter-spacing:0}
+.exam .when{font-size:13px;color:var(--muted)}
 .exam-grid > .exam:last-child:nth-child(odd){grid-column:1 / -1;min-height:0}
-.meter{display:flex;gap:3px}
-.meter i{flex:1;height:14px;border-radius:3px;background:var(--surface);opacity:.9}
-.meter i.on{background:var(--tint-deep);opacity:1}
+.meter{display:flex;gap:3px;margin-top:6px}
+.meter i{flex:1;height:6px;border-radius:3px;background:var(--ground);opacity:.9}
+.meter i.on{background:var(--accent);opacity:1}
 
-.pill{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;font-weight:700;border-radius:999px;padding:3px 10px;width:fit-content}
-.pill.ok{background:var(--ok-soft);color:var(--ok)}
-.pill.warn{background:var(--alert-soft);color:var(--alert)}
-.pill.ex{background:var(--line);color:var(--muted)}
-.pill.soft{background:var(--surface);color:var(--tint-deep)}
-.pill.live::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+/* Perfil y formularios */
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--surface);border-radius:999px;padding:4px}
+.seg button{background:transparent;border:0;border-radius:999px;min-height:44px;padding:8px 6px;font-weight:600;color:var(--text)}
+.seg button[aria-pressed="true"]{background:var(--primary);color:var(--on-primary)}
+.opt,.check{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid transparent;border-radius:var(--radius-inner);padding:14px 16px;transition:border-color .15s ease, background-color .15s ease}
+.opt input,.check input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--primary)}
+.check input{accent-color:var(--negative)}
+.opt label,.check label{cursor:pointer;flex:1}
+.opt:has(input:checked){border-color:var(--control)}
+.check:has(input:checked){border-color:#f2c4bd;background:var(--pill-negative-bg)}
+textarea,select,input[type=text]{font:inherit;width:100%;border:1px solid var(--control);border-radius:var(--radius-inner);padding:12px;background:var(--raised);color:var(--text)}
+.field{display:flex;flex-direction:column;gap:8px}
+.field > label{font-weight:600;font-size:15px}
 
-.signs{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
-.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
-.progress span{display:block;height:100%;background:var(--tint-deep);border-radius:999px;transition:width .25s}
-.tip{background:var(--tint-2);border-radius:14px;padding:10px 12px;color:var(--muted);font-size:.92rem}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:999px;padding:2px 10px;min-height:22px;width:fit-content}
+.pill.ok{background:var(--pill-positive-bg);color:var(--pill-positive-ink)}
+.pill.warn{background:var(--pill-negative-bg);color:var(--pill-negative-ink)}
+.pill.ex,.pill.soft{background:var(--active);color:var(--muted)}
+
+.signs{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.progress{height:6px;background:var(--surface);border-radius:999px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--text);border-radius:999px;transition:width .25s ease}
+.steprow{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tip{background:var(--tint-2);border-radius:var(--radius-inner);padding:12px 14px;color:var(--text);font-size:15px}
+.disclaimer{font-size:14px;color:var(--muted)}
 
 /* Visor de cámara */
-.viewer{position:relative;background:var(--cam);aspect-ratio:3/4;max-height:62vh;overflow:hidden;border-radius:24px;box-shadow:var(--shadow)}
+.viewer{position:relative;background:var(--cam);aspect-ratio:3/4;max-height:62vh;overflow:hidden;border-radius:var(--radius-card)}
 .viewer video,.viewer canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .viewer video.mirror{transform:scaleX(-1)}
 .hud{position:absolute;left:12px;right:12px;top:12px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.hud .say{background:rgba(255,255,255,.92);color:#121216;border-radius:16px;padding:10px 14px;font-weight:700;font-size:1rem}
+.hud .say{background:#ffffff;color:#1f201d;border-radius:var(--radius-inner);padding:10px 14px;font-weight:600;font-size:16px;display:flex;gap:8px;align-items:center}
 .hud .chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{background:rgba(255,255,255,.85);color:#4A4A58;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
-.chip.ok{background:#DDF3EA;color:#1F8C64}
-.chip.bad{background:#FFE1E8;color:#D63A57}
-.camtools{position:absolute;right:12px;bottom:12px;display:flex;gap:8px}
-.camtools button{background:rgba(255,255,255,.92);color:#121216;border:0;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700}
-.demo{display:flex;gap:14px;align-items:center;background:linear-gradient(155deg,var(--tint) 0%,var(--tint-2) 100%);border-radius:24px;padding:14px}
-.demo-fig{flex:0 0 120px}.demo-fig svg{width:120px;height:auto;display:block}
-.demo ol{margin:6px 0 0;padding-left:18px;font-size:.9rem;display:flex;flex-direction:column;gap:4px}
-.demo strong{font-size:.95rem}
-.more{margin:2px 0 6px 34px}.more summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:.88rem}
-.intro-more,.stack>.more{margin-left:0}
-.expair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
-.ex{margin:0}.ex svg{width:100%;height:auto;display:block;border-radius:14px}
-.ex figcaption{font-size:.82rem;color:var(--muted);margin-top:4px;line-height:1.3}.ex figcaption b{display:block;font-size:.8rem}
-.ex.ok figcaption b{color:var(--ok)}.ex.bad figcaption b{color:var(--alert)}
+.chip,.rep{background:#ffffff;color:#3d3d3a;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.chip.ok,.rep.ok,.say.ok{background:#dcfae5;color:#04250e}
+.chip.bad{background:#fdecea;color:#7a1d14}
+.chip.ok::before,.rep.ok::before,.say.ok::before,.verified::before{content:"";width:14px;height:14px;flex:none;background:currentColor;-webkit-mask:var(--check) center/contain no-repeat;mask:var(--check) center/contain no-repeat}
 .reps{display:flex;gap:6px;flex-wrap:wrap}
-.rep{background:rgba(255,255,255,.85);color:#4A4A58;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:700}
-.rep.cur{background:#fff;color:#121216;outline:2px solid var(--accent)}.rep.ok{background:#DDF3EA;color:#1F8C64}
-.verified{display:flex;gap:10px;align-items:center;font-weight:700;color:var(--ok)}
-.notice{background:var(--alert-soft);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.rep.cur{background:#1f201d;color:#ffffff}
+.camtools{position:absolute;right:12px;bottom:12px;display:flex;gap:8px}
+.camtools button{background:#ffffff;color:#1f201d;border:0;border-radius:999px;min-height:40px;padding:8px 14px;font-size:14px;font-weight:600}
+.verified{display:flex;gap:8px;align-items:center;font-weight:600;color:var(--positive)}
+.verified::before{width:18px;height:18px}
+.notice{background:var(--pill-negative-bg);color:var(--text);border-radius:var(--radius-card);padding:20px;display:flex;flex-direction:column;gap:12px}
 
-.result{border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
-.result.warn{background:linear-gradient(155deg,var(--pink) 0%,var(--pink-2) 100%)}
-.result.calm{background:linear-gradient(155deg,var(--mint) 0%,var(--mint-2) 100%)}
-.result .tag{display:inline-flex;width:fit-content;font-size:.76rem;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--surface);color:var(--alert)}
-.result.calm .tag{color:var(--ok)}
+/* Cómo se hace: figura de enseñanza */
+.demo{display:grid;grid-template-columns:116px 1fr;gap:16px;align-items:center;background:var(--tint);border-radius:var(--radius-card);padding:16px}
+.demo-fig svg{width:116px;height:auto;display:block}
+.demo ol{margin:6px 0 0;padding-left:18px;font-size:15px;display:flex;flex-direction:column;gap:4px}
+.demo strong{font-size:16px;font-weight:600}
 
-table{border-collapse:collapse;width:100%;font-size:.9rem}
-th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-weight:700;color:var(--muted);font-size:.76rem}
+/* Ejemplos de hallazgos */
+.more{margin:0 0 4px}
+.more summary{cursor:pointer;color:var(--text);font-weight:600;font-size:15px;min-height:44px;display:flex;align-items:center;text-decoration:underline;text-underline-offset:3px}
+.expair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.ex{margin:0}.ex svg{width:100%;height:auto;display:block;border-radius:var(--radius-inner)}
+.ex figcaption{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.35}
+.ex figcaption b{display:block;font-size:14px;color:var(--text)}
+.ex.bad figcaption b{color:var(--negative)}
+
+/* Resultado */
+.result{border-radius:var(--radius-card);padding:20px;display:flex;flex-direction:column;gap:12px}
+.result.warn{background:var(--pill-negative-bg)}
+.result.calm{background:var(--pill-positive-bg)}
+.result.calm,.result.warn{color:var(--text)}
+
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 8px 10px 0;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:13px}
 .tablewrap{overflow-x:auto}
-.rec{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:start}
-.rec .date{display:flex;flex-direction:column;align-items:center;justify-content:center;width:52px;height:52px;border-radius:16px;background:linear-gradient(155deg,var(--tint),var(--tint-2));font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
-.rec .date small{font-size:.7rem;font-weight:700;color:var(--muted)}
-textarea,select{font:inherit;width:100%;border:1.5px solid var(--line);border-radius:16px;padding:12px;background:var(--surface);color:var(--ink)}
-.field{display:flex;flex-direction:column;gap:8px}
-.field > label{font-weight:700;font-size:.92rem}
 
-.tabbar{position:fixed;left:0;right:0;bottom:0;padding:0 16px calc(16px + env(safe-area-inset-bottom,0px));pointer-events:none}
-.tabbar nav{pointer-events:auto;max-width:260px;margin:0 auto;display:flex;justify-content:space-between;background:var(--surface);border-radius:999px;padding:8px;box-shadow:0 12px 32px rgba(20,20,50,.14), 0 0 0 1px var(--line)}
-.tabbar button{width:52px;height:52px;border-radius:50%;border:0;background:var(--bg);color:var(--ink);display:grid;place-items:center}
-.tabbar button[aria-current="page"]{background:var(--nav);color:var(--on-nav)}
-.disclaimer{font-size:.84rem;color:var(--muted)}
-.copy{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.copy code{font-family:var(--font);font-size:1.6rem;font-weight:800;color:var(--ink)}
-.small-btn{border:0;background:var(--surface);border-radius:999px;padding:7px 14px;font-size:.85rem;font-weight:700;box-shadow:var(--shadow)}
+/* Historial */
+.rec{display:grid;grid-template-columns:52px 1fr;gap:4px 14px;align-items:start}
+.rec .date{display:flex;flex-direction:column;align-items:center;justify-content:center;width:52px;height:56px;border-radius:var(--radius-inner);background:var(--tint);font-weight:400;font-size:22px;line-height:1.05;font-variant-numeric:tabular-nums}
+.rec .date small{font-size:12px;color:var(--muted)}
+
+/* Barra inferior: tres destinos con nombre */
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--ground);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+.tabbar nav{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tabbar button{min-height:60px;border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:500}
+.tabbar button[aria-current="page"]{color:var(--text);font-weight:600}
+.copy{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.copy code{font-family:var(--font);font-size:28px;font-weight:400;color:var(--text);font-variant-numeric:tabular-nums}
+.small-btn{border:0;background:var(--active);color:var(--text);border-radius:999px;min-height:40px;padding:8px 16px;font-size:14px;font-weight:600}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <main class="app" id="app" aria-live="polite"></main>
 <div class="tabbar"><nav aria-label="Secciones">
-  <button id="tab-home" data-tab="home" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></button>
-  <button id="tab-history" data-tab="history" aria-label="Historial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></button>
-  <button id="tab-info" data-tab="info" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button>
+  <button id="tab-home" data-tab="home" ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
+  <button id="tab-history" data-tab="history" ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h10"/></svg>Historial</button>
+  <button id="tab-info" data-tab="info"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Perfil</button>
 </nav></div>
 
 <script>
@@ -334,9 +365,9 @@ function profileForm(p){
 }
 function profile(){
   if (!draft) draft = S.profile ? {...S.profile} : {sex:"mujer", mamas:true, testiculos:false, adult:false, reminder:false, day:5};
-  return `<div class="stack" style="gap:18px;padding-top:12px">
-    <span class="eyebrow">Bienvenida</span>
-    <h1>Aprende a revisarte bien, con la cámara como guía.</h1>
+  return `<div class="stack" style="gap:20px;padding-top:24px">
+    <div class="stack" style="gap:8px"><h1 class="greet">Revísate, paso a paso.</h1>
+    <p class="lead">Una guía para tu autoexamen mensual, con la cámara como apoyo.</p></div>
     <div class="card stack">
       <p>La app <strong>no diagnostica</strong>. Te guía para hacer cada paso correctamente y te dice cuándo consultar.</p>
       <p>La cámara se usa solo para comprobar tu posición y tus movimientos. <strong>Las imágenes se procesan en tu teléfono y no se guardan ni se envían.</strong></p>
@@ -350,33 +381,31 @@ function home(){
   const p = S.profile, ks = myExams();
   const ageOf = k => { const l = lastOf(k); return l ? Math.round((today - new Date(l.date))/864e5) : null; };
   const dk = [...ks].sort((a,b) => (ageOf(b) ?? 9999) - (ageOf(a) ?? 9999))[0], dage = ageOf(dk), de = EXAMS[dk];
+  const TOCA = {mama:"tus mamas", piel:"tu piel", testiculo:"tus testículos", boca:"tu boca y cuello"};
   const cards = ks.map(k => {
-    const e = EXAMS[k], last = lastOf(k);
+    const e = EXAMS[k], last = lastOf(k), age = ageOf(k);
     const segs = last ? Array.from({length:last.total},(_,i)=>`<i class="${i<last.verified?"on":""}"></i>`).join("") : "";
-    const full = last && last.verified === last.total && last.total > 0;
-    return `<button class="exam t-${k}" data-exam="${k}" id="exam-${k}">
-      <span class="glyph" aria-hidden="true">${e.glyph}</span>
+    return `<button class="exam t-${k}" data-exam="${k}" id="exam-${k}" aria-label="${e.name}: ${last ? `hace ${age} días` : "sin registro"}">
       <h3>${e.name}</h3>
-      ${last ? `<span class="pill ${full?"ok":"soft"}">${last.verified}/${last.total} verificados</span>` : `<span class="pill soft">Nuevo</span>`}
+      <span class="val">${last ? `${age}<small>días</small>` : `<span class="muted">—</span>`}</span>
+      <span class="when">${last ? `${last.verified} de ${last.total} pasos verificados · ${fmt(last.date)}` : "Aún sin registro"}</span>
       ${last?`<span class="meter" aria-hidden="true">${segs}</span>`:""}
-      <span class="when">${last ? `Último: ${fmt(last.date)}` : "Aún sin registro"}</span>
     </button>`;}).join("");
-  return `<div class="topbar"><div class="who"><span class="avatar" aria-hidden="true">R</span><div><small>Hola de nuevo</small><strong>Tu autoexamen</strong></div></div>
-      <button class="iconbtn" data-tab="info" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button></div>
-    <div class="stack" style="gap:6px"><h1 class="headline">Revísate<br>paso a paso<svg class="pulse" viewBox="0 0 92 26" aria-hidden="true"><path d="M0 14h30l5-10 6 18 5-12 3 4h43"/></svg></h1>
-      <p class="muted">Cuídate hoy, consulta a tiempo</p></div>
-    <div class="hero tinted t-${dk}">
-      <div class="stack"><span class="glyph" aria-hidden="true">${de.glyph}</span>
-        <h3>Siguiente:<br>${de.name}</h3>
-        <p class="disclaimer">${dage===null ? "Aún no lo has hecho" : "Desde tu último autoexamen"}</p>
-        <button class="btn white" data-exam="${dk}" id="hero-go">Empezar guía</button></div>
-      <div class="big">${dage===null ? `<span class="num">0</span><span class="unit">registros</span>` : `<span class="num">${dage}</span><span class="unit">días</span>`}</div>
+  const nSteps = de.steps.length;
+  const greet = dage===null ? `Hoy toca revisar ${TOCA[dk]}.` : dage >= 28 ? `Ya toca revisar ${TOCA[dk]}.` : `Vas al día. Lo próximo: ${TOCA[dk]}.`;
+  return `<header class="top"><span class="brand">Revísate</span>
+      <button class="iconbtn" data-tab="info" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button></header>
+    <div class="stack" style="gap:8px"><h1 class="greet">${greet}</h1>
+      <p class="lead">${dage===null ? `Aún no tienes registro de ${de.name.toLowerCase()}. Toma unos 5 minutos.` : `Tu último autoexamen de ${de.name.toLowerCase()} fue hace ${dage} días.`}${p.reminder ? ` Recordatorio: día ${p.day} de cada mes.` : ""}</p></div>
+    <div class="next t-${dk}">
+      <div class="stack" style="gap:4px"><h2>${de.name}</h2><p class="meta">${nSteps} pasos · unos 5 minutos</p></div>
+      <div class="fig">${dage===null ? `<b>—</b><span>sin registro</span>` : `<b>${dage}</b><span>días desde el último</span>`}</div>
+      <button class="btn" data-exam="${dk}" id="hero-go">Empezar guía</button>
     </div>
-    ${p.reminder?`<span class="pill soft live">Recordatorio el día ${p.day} de cada mes</span>`:""}
-    ${pending.map(f=>`<div class="result warn"><span class="tag">Seguimiento de 2 semanas</span><p>Revisa de nuevo la lesión en la boca el <strong>${fmt(f.date)}</strong>. Si sigue ahí, consulta a tu dentista o médico.</p><button class="small-btn" data-fu="${f.id}" id="fu-${f.id}">Ya la revisé</button></div>`).join("")}
-    <div class="stack"><div class="section-head"><h2>Tus autoexámenes</h2><span class="eyebrow">${ks.length} para ti</span></div><div class="exam-grid">${cards}</div></div>
+    ${pending.map(f=>`<div class="result warn"><h3>Seguimiento de 2 semanas</h3><p>Revisa de nuevo la lesión en la boca el <strong>${fmt(f.date)}</strong>. Si sigue ahí, consulta a tu dentista o médico.</p><button class="small-btn" data-fu="${f.id}" id="fu-${f.id}">Ya la revisé</button></div>`).join("")}
+    <div class="stack"><div class="section-head"><h2>Tus autoexámenes</h2><span class="meta">${ks.length} para ti</span></div><div class="exam-grid">${cards}</div></div>
     ${p.sex==="hombre"?`<p class="disclaimer">Los hombres también pueden tener cáncer de mama: consulta si notas un bulto o cambio en el pecho.</p>`:""}
-    <div class="card stack t-mama"><div class="row" style="align-items:center;gap:10px"><span class="glyph" aria-hidden="true">!</span><h3>Consulta pronto si notas</h3></div>
+    <div class="card stack"><h3>Consulta pronto si notas</h3>
       <ul class="signs">${GENERAL.map(g=>`<li>${g}</li>`).join("")}</ul><p class="disclaimer">Signos de alarma generales difundidos por el INEN.</p></div>`;
 }
 
@@ -384,13 +413,13 @@ function intro(){
   const e = EXAMS[S.exam], n = e.steps.length, nc = e.steps.filter(s=>s.cam).length;
   const can = camAllowed(S.exam);
   return `<button class="back" id="back-home">← Inicio</button>
-    <div class="card tinted stack"><div class="row" style="align-items:center;justify-content:space-between"><span class="glyph" aria-hidden="true">${e.glyph}</span><span class="pill soft">${n} pasos · 5 min</span></div><h1>${e.name}</h1><p>${e.intro}</p></div>
+    <div class="card tinted stack"><h1>${e.name}</h1><p>${e.intro}</p><p class="meta">${n} pasos · unos 5 minutos · ${nc} con cámara</p></div>
     <div class="card stack"><h3>Cuándo hacerlo</h3><p>${e.freq}</p></div>
     ${exAll(S.exam)}
     ${e.abcde ? abcdeTable() : ""}
     <div class="card stack"><h3>Cómo te guía la cámara</h3>
       <p>${e.framing}</p>
-      <p>${nc} de ${n} pasos se verifican con la cámara: la app revisa que haya buena luz, que estés bien encuadrada o encuadrado y y que te muevas o te quedes quieta/o el tiempo necesario. La app detecta movimiento, no reconoce el cuerpo ni evalúa la técnica: es una ayuda para llevar el ritmo, no un examen médico.</p>
+      <p>${nc} de ${n} pasos se verifican con la cámara: la app revisa que haya buena luz, que estés bien encuadrada o encuadrado y que te muevas o te quedes quieta/o el tiempo necesario. La app detecta movimiento, no reconoce el cuerpo ni evalúa la técnica: es una ayuda para llevar el ritmo, no un examen médico.</p>
       <p class="disclaimer">Nada se graba ni se envía. Todo se procesa en tu teléfono.</p></div>
     ${can?`<button class="btn" id="start-cam">Empezar con cámara</button><button class="btn ghost" id="start-manual">Empezar sin cámara</button>`
          :`<div class="notice"><p>La guía con cámara para este autoexamen está disponible solo para personas de 18 años o más. Puedes hacerlo con la guía paso a paso.</p></div><button class="btn" id="start-manual">Empezar</button>`}`;
@@ -525,7 +554,7 @@ function step(){
   const useCam = S.camMode && st.cam;
   const done = S.verified.has(S.step);
   return `<button class="back" id="quit">← Salir</button>
-    <div class="stack"><span class="eyebrow">${e.name} · paso ${S.step+1} de ${n}</span>
+    <div class="stack" style="gap:8px"><p class="meta">${e.name} · paso ${S.step+1} de ${n}</p>
     <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${S.step+1}"><span style="width:${(S.step+1)/n*100}%"></span></div></div>
     ${useCam?`<div class="viewer" id="viewer">
         <video id="vid" playsinline muted class="mirror" hidden></video>
@@ -537,7 +566,7 @@ function step(){
       <div id="camfail" hidden></div>`:""}
     ${demoCard(S.exam,S.step)}
     <div class="stack"><h2>${st.t}</h2><p>${st.b}</p>${st.tip?`<p class="tip">${st.tip}</p>`:""}</div>
-    ${useCam?`<p class="verified" id="okline" ${done?"":"hidden"}>✓ Paso verificado</p>`:""}
+    ${useCam?`<p class="verified" id="okline" ${done?"":"hidden"}>Paso verificado</p>`:""}
     <div class="row">${S.step>0?`<button class="btn ghost" id="prev">Anterior</button>`:""}
       <button class="btn" id="next" ${useCam && !done?"disabled":""}>${S.step===n-1?"Terminar":"Siguiente"}</button></div>
     ${useCam?`<button class="linkbtn" id="skip">No puedo hacer este paso con la cámara</button>`:`${S.camMode?`<p class="disclaimer">Este paso no se verifica con la cámara. Hazlo con calma y continúa.</p>`:""}`}`;
@@ -546,7 +575,7 @@ function step(){
 function check(){
   const e = EXAMS[S.exam];
   return `<button class="back" id="back-step">← Volver a los pasos</button>
-    <div class="stack"><span class="eyebrow">${e.name} · último paso</span><h1>¿Notaste algo de esto?</h1><p class="muted">Marca solo lo que sea nuevo o distinto al mes pasado.</p></div>
+    <div class="stack" style="gap:8px"><h1>¿Notaste algo de esto?</h1><p class="muted">${e.name}, último paso. Marca solo lo que sea nuevo o distinto al mes pasado.</p></div>
     <div class="stack">${e.signs.map((s,i)=>`<div class="check"><input type="checkbox" id="sg-${i}" ${S.checked.has(i)?"checked":""}><label for="sg-${i}">${s}</label></div>${EXD[S.exam]?.[i]?`<details class="more"><summary>Ver ejemplo</summary>${exPair(S.exam,i)}</details>`:""}`).join("")}</div>
     <div class="field"><label for="note">Nota para ti (opcional)</label><textarea id="note" rows="3" placeholder="Por ejemplo: lunar en la espalda, lado izquierdo">${esc(S.note)}</textarea></div>
     <button class="btn" id="finish">Guardar resultado</button>`;
@@ -558,13 +587,12 @@ function result(){
   const quality = S.camMode ? `<div class="card stack"><h3>Tu técnica</h3><p><strong>${S.verified.size} de ${camSteps}</strong> pasos verificados con la cámara.</p>
       ${S.verified.size<camSteps?`<p class="disclaimer">Los pasos sin verificar pueden haber quedado incompletos. La próxima vez, intenta hacerlos con la guía de la cámara.</p>`:`<p class="disclaimer">Hiciste todos los pasos guiados completos.</p>`}</div>`
     : `<p class="disclaimer">Hiciste este autoexamen sin cámara. Prueba la guía con cámara para verificar tu técnica.</p>`;
-  if (!warn) return `<div class="result calm"><span class="tag">Registro guardado</span><h2>No marcaste signos de alarma</h2>
-      <p>Repítelo una vez al mes para notar cualquier cambio.</p><p class="disclaimer">Esto no descarta nada. Si algo te preocupa, consulta igual.</p></div>
+  if (!warn) return `<div class="result calm"><h2>No marcaste signos de alarma</h2>
+      <p>Registro guardado. Repítelo una vez al mes para notar cualquier cambio.</p><p class="disclaimer">Esto no descarta nada. Si algo te preocupa, consulta igual.</p></div>
     ${quality}<button class="btn" id="back-home">Volver al inicio</button>`;
   const marked = e.signs.filter((_,i)=>S.checked.has(i));
-  return `<div class="result warn"><span class="tag">Te recomendamos consultar</span>
-      <h2>Agenda una cita con un profesional de salud</h2>
-      <p>Marcaste:</p><ul class="signs">${marked.map(m=>`<li>${m}</li>`).join("")}</ul>
+  return `<div class="result warn"><h2>Te recomendamos consultar</h2>
+      <p>Agenda una cita con un profesional de salud. Marcaste:</p><ul class="signs">${marked.map(m=>`<li>${m}</li>`).join("")}</ul>
       <p>Muchas de estas señales tienen causas que no son cáncer. Solo un profesional puede evaluarlas.</p></div>
     <div class="card stack"><h3>Dónde consultar</h3>
       <p>Tu centro de salud del MINSA, tu establecimiento de EsSalud o tu médico de confianza. ${S.exam==="boca"?"Para la boca, también tu dentista.":""}</p>
@@ -576,7 +604,7 @@ function result(){
 
 function history(){
   const recs = [...S.records].sort((a,b)=>b.date.localeCompare(a.date));
-  return `<div class="stack"><span class="eyebrow">Historial</span><h1>Tus registros</h1><p class="muted">Se guardan solo en este dispositivo.</p></div>
+  return `<div class="stack" style="gap:8px;padding-top:12px"><h1>Tus registros</h1><p class="muted">Se guardan solo en este dispositivo.</p></div>
     ${recs.length ? `<div class="stack">${recs.map(r=>`<div class="card rec t-${r.exam}">
       <span class="date t-${r.exam}">${Number(r.date.slice(8))}<small>${MONTHS[Number(r.date.slice(5,7))-1]}</small></span>
       <div class="stack" style="gap:6px"><div class="row" style="gap:8px;align-items:center"><strong>${EXAMS[r.exam].name}</strong>
@@ -591,7 +619,7 @@ function history(){
 
 function info(){
   if (!draft) draft = {...S.profile};
-  return `<div class="stack"><span class="eyebrow">Perfil</span><h1>Tus autoexámenes</h1></div>
+  return `<div class="stack" style="padding-top:12px"><h1>Perfil</h1></div>
     ${profileForm(draft)}
     <button class="btn" id="pf-save">Guardar cambios</button><p id="pf-msg" class="disclaimer" hidden></p>
     <div class="card stack"><h3>Privacidad</h3><p>La cámara se procesa en tu teléfono, cuadro por cuadro, y nunca se graba ni se envía. Tus registros se guardan solo en este navegador.</p>
@@ -709,23 +737,23 @@ function loop(){
   if (m){
     const light = m.bright > 55;
     const cond = cam.need==="still" ? (m.whole < 4.5) : (m.whole > 3);
-    setChip("c-light", light, light ? "☀ ✓" : "☀ Falta luz");
-    setChip("c-cond", cond, cam.need==="still" ? (cond?"✓ Quieta/o":"Quédate quieta/o") : (cond?"✓ Bien":"Muévete"));
+    setChip("c-light", light, light ? "Luz" : "Falta luz");
+    setChip("c-cond", cond, cam.need==="still" ? (cond?"Quieta/o":"Quédate quieta/o") : (cond?"Movimiento":"Muévete"));
     if (light && cond && !S.verified.has(S.step)) CAM.acc += dt;
     const say = document.getElementById("say");
     const per = cam.reps ? cam.secs/cam.reps : cam.secs, rdone = cam.reps ? Math.min(Math.floor(CAM.acc/per), cam.reps) : 0;
-    if (say && !S.verified.has(S.step)) say.textContent = !light ? "Busca más luz" : cond ? "✓ Muy bien" : (cam.reps ? `Pasada ${rdone+1} de ${cam.reps}: presión ${cam.repLabels[rdone].toLowerCase()}` : cam.say);
+    if (say && !S.verified.has(S.step)){ say.className = "say" + (light && cond ? " ok" : ""); } if (say && !S.verified.has(S.step)) say.textContent = !light ? "Busca más luz" : cond ? "Muy bien" : (cam.reps ? `Pasada ${rdone+1} de ${cam.reps}: presión ${cam.repLabels[rdone].toLowerCase()}` : cam.say);
   }
   const pct = CAM.acc / cam.secs;
   if (cam.reps){
     const rd = Math.min(Math.floor(CAM.acc/(cam.secs/cam.reps)), cam.reps), box = document.getElementById("reps");
-    if (box) box.innerHTML = cam.repLabels.map((l,i)=>`<span class="rep ${i<rd?"ok":i===rd?"cur":""}">${i<rd?"✓":i+1} ${l}</span>`).join("");
+    if (box) box.innerHTML = cam.repLabels.map((l,i)=>`<span class="rep ${i<rd?"ok":i===rd?"cur":""}">${l}</span>`).join("");
   } else setChip("c-time", pct>=1 || null, `${Math.min(Math.floor(CAM.acc), cam.secs)} / ${cam.secs} s`);
   drawOverlay(cam, m || {}, pct);
   if (pct >= 1 && !S.verified.has(S.step)){
     S.verified.add(S.step);
     const n = document.getElementById("next"), ok = document.getElementById("okline"), say = document.getElementById("say");
-    if (n) n.disabled = false; if (ok) ok.hidden = false; if (say) say.textContent = "Paso verificado";
+    if (n) n.disabled = false; if (ok) ok.hidden = false; if (say){ say.textContent = "Paso verificado"; say.className = "say ok"; }
     if (navigator.vibrate) try{ navigator.vibrate(60); }catch(e){}
   }
   CAM.raf = requestAnimationFrame(loop);
