@@ -204,7 +204,7 @@ const EXAMS = {
     intro:"La meta es conocer cómo se ven y se sienten tus mamas normalmente, para notar cualquier cambio.",
     framing:"Apoya el celular frente a ti, a la altura del pecho, a unos 60 cm.",
     steps:[
-      {t:"Frente al espejo", b:"Brazos abajo. Mira la forma, el tamaño y el color de ambas mamas.", tip:"Busca diferencias nuevas, no las asimetrías de siempre.", cam:{zone:[.15,.32,.7,.42], need:"still", secs:4, say:"Encuadra tu pecho en el recuadro y quédate quieta"}},
+      {t:"Frente al espejo", b:"Brazos abajo. Mira la forma, el tamaño y el color de ambas mamas.", tip:"Busca diferencias nuevas, no las asimetrías de siempre.", cam:{zone:[.15,.32,.7,.42], need:"still", secs:4, say:"Ponte frente a la cámara y quédate quieta"}},
       {t:"Brazos arriba", b:"Levanta los brazos y vuelve a mirar. Observa hundimientos de la piel o del pezón.", cam:{zone:[.1,.05,.8,.32], need:"motion", secs:2, say:"Levanta los brazos"}},
       {t:"Palpa la mama derecha", b:"Brazo derecho detrás de la cabeza. Con las yemas de tres dedos de la mano izquierda, haz círculos pequeños del pezón hacia afuera.", tip:"Usa presión suave, media y firme. Puedes hacerlo de pie o acostada.", cam:{zone:[.5,.34,.42,.4], need:"motion", secs:18, reps:3, repLabels:["Suave","Media","Firme"], say:"Haz círculos pequeños con las yemas de los dedos"}},
       {t:"Axila derecha", b:"Palpa la axila y la zona sobre la clavícula buscando bultos.", cam:{zone:[.62,.2,.34,.3], need:"motion", secs:8, say:"Palpa la axila"}},
@@ -221,10 +221,10 @@ const EXAMS = {
     framing:"Apoya el celular a unos 2 metros para que se vea todo tu cuerpo, o usa la cámara trasera para mirar de cerca.",
     abcde:true,
     steps:[
-      {t:"Frente", b:"Revisa tu cuerpo de frente en el espejo, de la cabeza a los pies.", cam:{zone:[.2,.06,.6,.88], need:"still", secs:5, say:"Ponte de frente, todo el cuerpo en el recuadro"}},
+      {t:"Frente", b:"Revisa tu cuerpo de frente en el espejo, de la cabeza a los pies.", cam:{zone:[.2,.06,.6,.88], need:"still", secs:5, say:"Ponte de frente, con todo el cuerpo a la vista"}},
       {t:"Espalda", b:"Date la vuelta y revisa la espalda con un espejo de mano.", cam:{zone:[.2,.06,.6,.88], need:"motion", secs:3, say:"Gira despacio hasta quedar de espaldas"}},
       {t:"Costados", b:"Levanta los brazos y revisa cada costado.", cam:{zone:[.05,.06,.9,.5], need:"motion", secs:3, say:"Levanta los brazos y gira a cada lado"}},
-      {t:"Brazos, manos y uñas", b:"Revisa antebrazos, la parte de atrás de los brazos, palmas y uñas.", tip:"Una mancha oscura nueva bajo una uña también cuenta.", cam:{zone:[.2,.25,.6,.5], need:"still", secs:4, say:"Acerca un brazo al recuadro y mantenlo quieto"}},
+      {t:"Brazos, manos y uñas", b:"Revisa antebrazos, la parte de atrás de los brazos, palmas y uñas.", tip:"Una mancha oscura nueva bajo una uña también cuenta.", cam:{zone:[.2,.25,.6,.5], need:"still", secs:4, say:"Acerca un brazo a la cámara y mantenlo quieto"}},
       {t:"Piernas y pies", b:"Revisa la parte de atrás de las piernas, entre los dedos y las plantas.", cam:null},
       {t:"Cuero cabelludo y nuca", b:"Separa el cabello con un peine o pide ayuda a alguien.", cam:null},
       {t:"Compara con la regla ABCDE", b:"Mira cada lunar con la regla ABCDE y busca el patito feo: el lunar que no se parece a los demás.", cam:null}
@@ -237,7 +237,7 @@ const EXAMS = {
     intro:"El cáncer de testículo afecta sobre todo a hombres de 15 a 35 años y casi siempre se cura si se detecta temprano.",
     framing:"Apoya el celular frente a ti, a la altura de la cadera, a unos 60 cm.",
     steps:[
-      {t:"Observa", b:"Mira el escroto y busca hinchazón en la piel.", cam:{zone:[.25,.35,.5,.35], need:"still", secs:4, say:"Encuadra la zona en el recuadro y quédate quieto"}},
+      {t:"Observa", b:"Mira el escroto y busca hinchazón en la piel.", cam:{zone:[.25,.35,.5,.35], need:"still", secs:4, say:"Apunta la cámara a la zona y quédate quieto"}},
       {t:"Testículo derecho", b:"Ruédalo suavemente entre el pulgar y los dedos de ambas manos. No debería doler.", tip:"Lo normal es una superficie lisa y firme.", cam:{zone:[.48,.35,.3,.35], need:"motion", secs:15, say:"Rueda el testículo con los dedos"}},
       {t:"Testículo izquierdo", b:"Repite con el otro testículo.", cam:{zone:[.22,.35,.3,.35], need:"motion", secs:15, say:"Rueda el testículo con los dedos"}},
       {t:"Ubica el epidídimo", b:"Detrás de cada testículo hay un tubo blando: es el epidídimo. Es normal, no lo confundas con un bulto.", cam:null},
@@ -253,7 +253,7 @@ const EXAMS = {
     steps:[
       {t:"Cara", b:"Compara ambos lados de la cara y busca hinchazones o cambios en la piel.", cam:{zone:[.2,.12,.6,.56], need:"still", secs:4, say:"Centra tu cara en el óvalo y quédate quieto", oval:true}},
       {t:"Cuello y mandíbula", b:"Palpa bajo la mandíbula y a lo largo del músculo de cada lado del cuello.", tip:"Alerta con un bulto firme, que no se mueve y no duele.", cam:{zone:[.15,.6,.7,.3], need:"motion", secs:10, say:"Palpa tu cuello con los dedos"}},
-      {t:"Labios y encías", b:"Levanta el labio superior y baja el inferior. Revisa llagas, cambios de color o sangrado.", cam:{zone:[.3,.42,.4,.2], need:"still", secs:4, say:"Acerca la boca al recuadro y mantén los labios separados"}},
+      {t:"Labios y encías", b:"Levanta el labio superior y baja el inferior. Revisa llagas, cambios de color o sangrado.", cam:{zone:[.3,.42,.4,.2], need:"still", secs:4, say:"Acerca la boca a la cámara y mantén los labios separados"}},
       {t:"Mejillas", b:"Separa la comisura con los dedos y mira el interior de cada mejilla.", cam:{zone:[.3,.42,.4,.2], need:"motion", secs:4, say:"Separa la mejilla"}},
       {t:"Lengua", b:"Sácala, sujétala con la gasa y revisa arriba, abajo y ambos bordes.", cam:{zone:[.3,.45,.4,.25], need:"still", secs:5, say:"Saca la lengua y mantenla quieta"}},
       {t:"Piso y paladar", b:"Con la punta de la lengua en el paladar, mira el piso de la boca. Luego inclina la cabeza y mira el paladar.", cam:{zone:[.3,.38,.4,.28], need:"still", secs:4, say:"Abre la boca"}}
@@ -463,10 +463,10 @@ const DEMOS = {
   circles:{title:"Círculos con las yemas", how:["Pon el brazo detrás de la cabeza.","Con 3 dedos de la otra mano, haz círculos pequeños sobre la mama.","Parte del pezón y ve hacia afuera, como un caracol."]},
   axilla:{title:"Palpa la axila", how:["Deja el brazo ligeramente levantado.","Sube y baja los dedos por la axila.","Termina sobre la clavícula."]},
   turn:{title:"Gira despacio", how:["Date la vuelta lentamente, como un cuarto de vuelta cada vez.","Muestra espalda y costados a la cámara.","Usa un espejo de mano para zonas difíciles."]},
-  arm:{title:"Acerca el brazo", how:["Estira el brazo hacia el recuadro.","Gíralo para ver la palma y el dorso.","Quédate quieta/o unos segundos."]},
+  arm:{title:"Acerca el brazo", how:["Estira el brazo hacia la cámara.","Gíralo para ver la palma y el dorso.","Quédate quieta/o unos segundos."]},
   roll:{title:"Ruédalo entre los dedos", how:["Sostén el testículo con ambas manos.","Haz rodar suavemente entre el pulgar y los dedos.","Debe sentirse liso y firme, sin dolor."]},
   neck:{title:"Palpa el cuello", how:["Con las yemas, recorre bajo la mandíbula.","Baja por el costado del cuello, de un lado y luego del otro.","Ve lento y con presión suave."]},
-  mouth:{title:"Abre la boca", how:["Acércate al recuadro con buena luz.","Abre la boca o separa los labios.","Mantén la posición, sin moverte."]},
+  mouth:{title:"Abre la boca", how:["Acércate a la cámara con buena luz.","Abre la boca o separa los labios.","Mantén la posición, sin moverte."]},
   cheek:{title:"Separa la mejilla", how:["Con un dedo, jala la comisura de la boca hacia un lado.","Mira el interior de la mejilla.","Repite del otro lado."]},
   tongue:{title:"Saca la lengua", how:["Saca la lengua lo más que puedas.","Quédate quieta/o un momento.","Luego levántala para ver abajo y a los lados."]}
 };
@@ -690,19 +690,9 @@ function drawOverlay(cam, m, pct){
       c.beginPath(); c.arc(W*(zx+zw/2)+Math.cos(t*4)*W*zw*.2, H*(zy+zh/2)+Math.sin(t*4)*H*zh*.2, W*.045, 0, Math.PI*2); c.fill();
     }
   }
-  const [zx,zy,zw,zh] = cam.zone, ok = pct >= 1;
+  const ok = pct >= 1;
   const color = ok ? "#7BD39C" : "#F2F7F5";
-  // Oscurecer fuera de la zona
-  c.fillStyle = "rgba(5,10,9,.45)";
-  c.beginPath(); c.rect(0,0,W,H);
-  if (cam.oval) c.ellipse(W*(zx+zw/2), H*(zy+zh/2), W*zw/2, H*zh/2, 0, 0, Math.PI*2, true);
-  else c.roundRect(W*zx, H*zy, W*zw, H*zh, 16*dpr);
-  c.fill("evenodd");
-  c.lineWidth = 3*dpr; c.strokeStyle = color; c.setLineDash(ok ? [] : [10*dpr, 8*dpr]);
-  c.beginPath();
-  if (cam.oval) c.ellipse(W*(zx+zw/2), H*(zy+zh/2), W*zw/2, H*zh/2, 0, 0, Math.PI*2);
-  else c.roundRect(W*zx, H*zy, W*zw, H*zh, 16*dpr);
-  c.stroke(); c.setLineDash([]);
+
   // Anillo de progreso
   const cx = W - 40*dpr, cy = H - 92*dpr, rad = 22*dpr;
   c.lineWidth = 5*dpr; c.strokeStyle = "rgba(242,247,245,.25)";
